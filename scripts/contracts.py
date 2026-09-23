@@ -4,7 +4,8 @@
   check           Validate every JSON Schema under contracts/, every example against its schema,
                   and every OpenAPI file's basic shape. Non-zero exit on any problem.
   export          Regenerate contracts/openapi/<module>.yaml for every backend module that has a
-                  router (code is the source of truth for implemented endpoints).
+                  router, plus any JSON documents a module generates from its models via
+                  ``contract_documents()`` in module.py (schemas, event payloads, tool schemas).
   export --check  Fail if the committed OpenAPI files differ from what the code generates (CI).
 """
 
@@ -45,7 +46,8 @@ def cmd_check(_: argparse.Namespace) -> int:
         expected_id = "https://argus.local/" + path.relative_to(ROOT).as_posix()
         if schema.get("$id") != expected_id:
             problems.append(f"{rel}: $id must be {expected_id}")
-        needs_example = path.parent.parent.name in {"events", "tools", "ml"} and not path.name.startswith("_")
+        parts = path.relative_to(CONTRACTS).parts
+        needs_example = parts[0] in {"events", "tools", "ml"} and "ws" not in parts and not path.name.startswith("_")
         if needs_example:
             example = path.parent / "examples" / (path.stem + ".example.json")
             if not example.exists():
@@ -133,6 +135,16 @@ def generate_specs() -> dict[Path, str]:
             spec["components"]["securitySchemes"] = full["components"]["securitySchemes"]
         name = getattr(m.module, "OPENAPI_FILE", m.name.replace("_", "-") + ".yaml")
         files[CONTRACTS / "openapi" / name] = yaml.safe_dump(spec, sort_keys=False, allow_unicode=True, width=120)
+    for m in discover():
+        producer = getattr(m.module, "contract_documents", None)
+        if producer is None:
+            continue
+        for rel, doc in producer().items():
+            full_doc = {"$schema": "https://json-schema.org/draft/2020-12/schema",
+                        "$id": f"https://argus.local/contracts/{rel}",
+                        "$comment": f"GENERATED from {m.name} models by scripts/contracts.py export. Do not hand-edit.",
+                        **{k: v for k, v in doc.items() if k not in ("$schema", "$id")}}
+            files[CONTRACTS / rel] = json.dumps(full_doc, indent=2, ensure_ascii=False) + "\n"
     return files
 
 
@@ -149,9 +161,9 @@ def cmd_export(args: argparse.Namespace) -> int:
     for path in drift:
         print(("DRIFT " if args.check else "wrote ") + path.relative_to(ROOT).as_posix())
     if args.check and drift:
-        print("OpenAPI contracts are out of date with the code. Run: uv run python scripts/contracts.py export")
+        print("Generated contracts are out of date with the code. Run: uv run python scripts/contracts.py export")
         return 1
-    print(f"{len(files)} module OpenAPI file(s) {'checked' if args.check else 'up to date' if not drift else 'exported'}")
+    print(f"{len(files)} generated contract file(s) {'checked' if args.check else 'up to date' if not drift else 'exported'}")
     return 0
 
 

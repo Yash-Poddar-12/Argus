@@ -14,7 +14,7 @@
 | State | IN_REVIEW |
 | Current focus | G0 verification (Docker stack) |
 | Contract version | m00-platform 1.0.0 (generated) · events v1 |
-| Last updated | 2026-09-23 · @Developer-Devanshhh · M00 implemented: core (config, db, event bus memory+Redis St |
+| Last updated | 2026-09-23 · @Developer-Devanshhh · core fixes found while building M01: nested-router path coll |
 <!-- /status:summary -->
 
 ## Work packages
@@ -55,5 +55,6 @@
 
 <!-- newest first · one line per push: date · @handle · ACTION · branch · summary -->
 <!-- log:insert -->
+- 2026-09-23 · @Developer-Devanshhh · PUSH · feature/m01-operational-twin · core fixes found while building M01: nested-router path collection (FastAPI 0.14x), RedisStateStore.keys bug, seed_all discovery, generated contract documents in scripts/contracts.py
 - 2026-09-23 · @Developer-Devanshhh · PUSH · feature/m00-foundation · M00 implemented: core (config, db, event bus memory+Redis Streams, state, WS gateway, auth/RBAC, registry, errors, logging, health/metrics), m00_platform CRUD+events+seed, Alembic branches, contracts baseline + tooling, frontend workspace + both app shells with slots, dev.py, compose, CI
 - 2026-09-23 · @team · INIT · docs scaffold · Status file created from SPEC work packages

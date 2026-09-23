@@ -143,3 +143,17 @@ def test_contracts_valid_and_openapi_in_sync():
         r = subprocess.run([sys.executable, str(ROOT / "scripts" / "contracts.py"), *args], capture_output=True,
                            text=True, cwd=ROOT)
         assert r.returncode == 0, r.stdout + r.stderr
+
+
+async def test_redis_state_store_roundtrip():
+    import fakeredis
+
+    from backend.core.state import RedisStateStore
+
+    store = RedisStateStore(fakeredis.FakeAsyncRedis())
+    await store.set_json("twin:operator:OP1001", {"a": 1, "nested": {"b": [1, 2]}})
+    await store.set_json("twin:machine:EXC001", {"mode": "DIGGING"})
+    assert await store.get_json("twin:operator:OP1001") == {"a": 1, "nested": {"b": [1, 2]}}
+    assert await store.keys("twin:*") == ["twin:machine:EXC001", "twin:operator:OP1001"]
+    await store.delete("twin:machine:EXC001")
+    assert await store.get_json("twin:machine:EXC001") is None and await store.ping()

@@ -62,7 +62,8 @@ class RedisStateStore:
         await self._redis.delete(key)
 
     async def keys(self, pattern: str) -> list[str]:
-        return sorted(k.decode() if isinstance(k, bytes) else k async for k in self._redis.scan_iter(match=pattern))
+        keys = [k.decode() if isinstance(k, bytes) else k async for k in self._redis.scan_iter(match=pattern)]
+        return sorted(keys)
 
     async def ping(self) -> bool:
         try:

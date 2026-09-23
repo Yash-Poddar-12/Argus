@@ -11,7 +11,8 @@ from fastapi.testclient import TestClient
 
 from backend.core.app import create_app
 from backend.core.config import Settings
-from backend.modules.m00_platform.seed import DEMO_PASSWORD, seed_platform
+from backend.modules.m00_platform.seed import DEMO_PASSWORD
+from backend.seed import seed_all
 
 
 @pytest.fixture
@@ -30,11 +31,7 @@ def client(app):
     with TestClient(app) as c:
         rt = app.state.runtime
 
-        async def _seed():
-            async with rt.db.sessionmaker() as s:
-                await seed_platform(s)
-
-        c.portal.call(_seed)
+        c.portal.call(seed_all, rt.db)
         yield c
 
 

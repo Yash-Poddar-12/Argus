@@ -23,6 +23,18 @@ log = get_logger(__name__)
 API_PREFIX = "/api/v1"
 
 
+def route_paths(router, prefix: str = "") -> set[str]:
+    """All paths of a router, including nested include_router() children (any FastAPI version)."""
+    paths: set[str] = set()
+    for r in router.routes:
+        if hasattr(r, "path"):
+            paths.add(prefix + r.path)
+        elif hasattr(r, "original_router"):  # FastAPI >= 0.140 wraps included routers
+            ctx = getattr(r, "include_context", None)
+            paths |= route_paths(r.original_router, prefix + (getattr(ctx, "prefix", "") or ""))
+    return paths
+
+
 def create_app(settings: Settings | None = None, runtime: Runtime | None = None) -> FastAPI:
     settings = settings or get_settings()
     configure_logging(settings.log_level, settings.log_json)
@@ -101,7 +113,7 @@ def create_app(settings: Settings | None = None, runtime: Runtime | None = None)
         if m.router is None:
             continue
         app.include_router(m.router, prefix=API_PREFIX)
-        app.state.module_paths[m.name] = {API_PREFIX + r.path for r in m.router.routes if hasattr(r, "path")}
+        app.state.module_paths[m.name] = route_paths(m.router, API_PREFIX)
 
     app.include_router(build_ws_router(rt.ws))
     return app
