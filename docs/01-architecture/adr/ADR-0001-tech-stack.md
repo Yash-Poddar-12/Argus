@@ -2,7 +2,7 @@
 
 | Field | Value |
 |-------|-------|
-| Status | **PROPOSED**: confirm at kickoff, then set to ACCEPTED |
+| Status | **PROPOSED**: confirm at kickoff, then set to ACCEPTED. Implemented as amended below (M00, 2026-09-23) |
 | Date | 2026-09-23 |
 | Author | team |
 | Affected modules | all |
@@ -33,6 +33,14 @@ The master plan fixes the *kinds* of stores and patterns (PostgreSQL, a time-ser
 | Lint/format | ruff + mypy (backend), eslint + prettier + tsc (frontend) | — |
 | CI | GitHub Actions: lint, typecheck, tests, contract validation, api-client drift check | — |
 | Local run | Docker Compose (`infra/compose/base.yml` + per-module files), `Makefile` wrappers | — |
+
+## Implementation notes (M00, 2026-09-23)
+
+- **Lite mode:** `APP_ENV=lite` runs on SQLite + in-memory event bus + in-memory state store, so the backend and all tests run without Docker. Docker Compose runs the full stack (Postgres/Timescale/pgvector, Redis Streams, MQTT).
+- **UI styling:** plain CSS design tokens in `frontend/packages/ui/src/tokens.css` instead of Tailwind (fewer moving parts across teammates' toolchains). Revisit if M02/M03 prefer Tailwind.
+- **Versions resolved:** FastAPI 0.14x, Next.js 16, React 19, TypeScript pinned to 5.x (TS 7's native compiler isn't used by Next's type check yet).
+- **OpenAPI is generated from code** per module (`scripts/contracts.py export`); CI fails if the committed contract drifts from the code. Event schemas are hand-written JSON Schema and validated at publish time in tests.
+- **Task runner:** `scripts/dev.py` (Python) with an optional `Makefile` wrapper, because several teammates are on Windows without make.
 
 ## Options considered
 

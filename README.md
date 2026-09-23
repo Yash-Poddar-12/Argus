@@ -69,14 +69,19 @@ Live board: `python scripts/status.py board`
 | Antigravity | `AGENTS.md` / `GEMINI.md` (depends on version) | see [`AGENT_PLAYBOOK.md`](docs/04-workflow/AGENT_PLAYBOOK.md) |
 | Anything else | point it at `AGENTS.md` | starter prompt in the playbook |
 
-### Run locally (target, available after Gate G0)
+### Run locally
+
+Needs Python 3.12+ with [uv](https://docs.astral.sh/uv/) and Node 20+. Docker is optional.
 
 ```bash
-git clone <repo> && cd <repo>
-cp infra/env/base.env.example .env        # + any module env files you need
-make up                                    # frontend + backend + Postgres/Timescale + Redis + event bus
-make seed                                  # demo data: OP1001, EXC001, SITE_A, TASK001
-make sim SCENARIO=S1                       # deterministic simulator
+git clone https://github.com/Yash-Poddar-12/Argus.git && cd Argus
+uv sync
+python scripts/dev.py api            # backend, LITE mode (SQLite + in-memory bus), demo data seeded -> http://localhost:8000/docs
+python scripts/dev.py web operator   # operator app -> http://localhost:3000  (login op1001 / demo1234)
+python scripts/dev.py web admin      # admin app    -> http://localhost:3001  (login sup001 / demo1234)
+
+# Full stack with Postgres/Timescale + Redis + MQTT (Docker):
+python scripts/dev.py env && python scripts/dev.py up
 ```
 
 ---

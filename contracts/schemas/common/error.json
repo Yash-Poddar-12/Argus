@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/schemas/common/error.json",
+  "title": "Error envelope",
+  "type": "object",
+  "required": [
+    "error"
+  ],
+  "properties": {
+    "error": {
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "examples": [
+            "NOT_FOUND",
+            "VALIDATION_ERROR",
+            "FORBIDDEN",
+            "UNAUTHORIZED",
+            "CONFLICT",
+            "INVALID_STATE",
+            "INTERNAL_ERROR"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {},
+        "request_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

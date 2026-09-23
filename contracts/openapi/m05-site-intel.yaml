@@ -1,0 +1,8 @@
+# Skeleton owned by M05. Replace in M05-WP0 (hand-written contract first, then generated from code
+# with `uv run python scripts/contracts.py export` once the module has a router).
+openapi: 3.1.0
+info:
+  title: M05 Site Operational Intelligence API
+  version: 0.0.0
+  description: PLANNED. See docs/02-contracts/API_CATALOG.md section M05.
+paths: {}

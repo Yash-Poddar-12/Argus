@@ -1,0 +1,13 @@
+{
+  "machine_id": "EXC001",
+  "site_id": "SITE_A",
+  "machine_type": "EXCAVATOR",
+  "model": "CAT 320",
+  "serial_number": "CAT0320E1001",
+  "engine_hours": 4210.5,
+  "status": "MAINTENANCE",
+  "created_at": "2026-09-23T07:00:00Z",
+  "changed_fields": [
+    "status"
+  ]
+}

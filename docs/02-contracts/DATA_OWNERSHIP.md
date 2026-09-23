@@ -8,7 +8,7 @@
 
 | Table | Owner (writer) | Main readers | Notes |
 |-------|----------------|--------------|-------|
-| `users`, `roles`, `permissions`, `user_site_scopes` | M00 | core auth | |
+| `users`, `user_site_scopes` | M00 | core auth | roles/permissions live in code (`backend/core/auth.py`; modules add permissions via `module.py`) |
 | `operators` | M00 | M01, M06, M08 via API/events | master data |
 | `machines` | M00 | M01, M04, M05 | master data; `engine_hours` synced from telemetry by M00 on `machine.telemetry.received`, or kept in twin only (decide in M01-WP3) |
 | `sites`, `zones` | M00 | M04, M05, M01 | zone geometry and type |

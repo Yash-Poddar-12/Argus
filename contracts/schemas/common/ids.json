@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/schemas/common/ids.json",
+  "title": "Canonical identifiers",
+  "$defs": {
+    "BusinessId": {
+      "type": "string",
+      "pattern": "^[A-Z0-9_]{2,32}$",
+      "description": "Human-readable IDs such as OP1001, EXC001, SITE_A"
+    },
+    "OperatorId": {
+      "$ref": "#/$defs/BusinessId",
+      "examples": [
+        "OP1001"
+      ]
+    },
+    "MachineId": {
+      "$ref": "#/$defs/BusinessId",
+      "examples": [
+        "EXC001"
+      ]
+    },
+    "SiteId": {
+      "$ref": "#/$defs/BusinessId",
+      "examples": [
+        "SITE_A"
+      ]
+    },
+    "ZoneId": {
+      "$ref": "#/$defs/BusinessId",
+      "examples": [
+        "ZONE_A"
+      ]
+    },
+    "TaskId": {
+      "$ref": "#/$defs/BusinessId",
+      "examples": [
+        "TASK001"
+      ]
+    },
+    "Uuid": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "Timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 UTC"
+    },
+    "Language": {
+      "type": "string",
+      "enum": [
+        "en",
+        "hi",
+        "ta"
+      ]
+    }
+  }
+}

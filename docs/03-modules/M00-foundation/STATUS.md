@@ -9,23 +9,23 @@
 | Field | Value |
 |-------|-------|
 | Module | M00 |
-| Owner | @unassigned |
+| Owner | @Developer-Devanshhh |
 | Phase | 0 |
-| State | NOT_STARTED |
-| Current focus | — |
-| Contract version | — |
-| Last updated | 2026-09-23 · @team · status file created |
+| State | IN_REVIEW |
+| Current focus | G0 verification (Docker stack) |
+| Contract version | m00-platform 1.0.0 (generated) · events v1 |
+| Last updated | 2026-09-23 · @Developer-Devanshhh · M00 implemented: core (config, db, event bus memory+Redis St |
 <!-- /status:summary -->
 
 ## Work packages
 
 | WP | Title | State | Branch / PR | Notes |
 |----|-------|-------|-------------|-------|
-| M00-WP1 | Repo skeleton, compose base, Makefile, CI | NOT_STARTED | — | |
-| M00-WP2 | Backend core: settings, DB, Alembic branches, EventBus, WS gateway, logging, health, registry | NOT_STARTED | — | |
-| M00-WP3 | Auth, RBAC, site scope, master data CRUD + events + seed | NOT_STARTED | — | |
-| M00-WP4 | Frontend workspace, UI kit, API client gen, both app shells with pre-registered slots, i18n scaffold, WS hook | NOT_STARTED | — | |
-| M00-WP5 | Contracts baseline: common schemas, envelope, per-module OpenAPI skeletons, validation script | NOT_STARTED | — | |
+| M00-WP1 | Repo skeleton, compose base, Makefile, CI | IN_REVIEW | — | |
+| M00-WP2 | Backend core: settings, DB, Alembic branches, EventBus, WS gateway, logging, health, registry | IN_REVIEW | — | |
+| M00-WP3 | Auth, RBAC, site scope, master data CRUD + events + seed | IN_REVIEW | — | |
+| M00-WP4 | Frontend workspace, UI kit, API client gen, both app shells with pre-registered slots, i18n scaffold, WS hook | IN_REVIEW | — | |
+| M00-WP5 | Contracts baseline: common schemas, envelope, per-module OpenAPI skeletons, validation script | IN_REVIEW | — | |
 
 ## Using mocks for
 
@@ -36,6 +36,12 @@
 ## Blockers
 
 - none
+
+## Verification notes
+
+- Verified locally (Windows, no Docker): 17 backend tests (auth/RBAC/site scope, CRUD + contract-validated events, in-memory + Redis Streams bus (fakeredis), module auto-discovery, WS auth, Alembic heads == models, contracts check + OpenAPI drift), lite-mode server smoke test, `next build` of both apps, typecheck of all packages.
+- **Not yet verified:** `python scripts/dev.py up` (Docker Compose stack: Timescale image, Redis, MQTT, containers). Needs a teammate with Docker for the G0 checklist.
+- G0 items still open: every teammate runs the stack; branch protection + CODEOWNERS; ADR-0001 → ACCEPTED.
 
 ## Contract changes (pending / recent)
 
@@ -49,4 +55,5 @@
 
 <!-- newest first · one line per push: date · @handle · ACTION · branch · summary -->
 <!-- log:insert -->
+- 2026-09-23 · @Developer-Devanshhh · PUSH · feature/m00-foundation · M00 implemented: core (config, db, event bus memory+Redis Streams, state, WS gateway, auth/RBAC, registry, errors, logging, health/metrics), m00_platform CRUD+events+seed, Alembic branches, contracts baseline + tooling, frontend workspace + both app shells with slots, dev.py, compose, CI
 - 2026-09-23 · @team · INIT · docs scaffold · Status file created from SPEC work packages

@@ -1,0 +1,61 @@
+# Base stack (M00). Modules add services in infra/compose/<module>.yml; scripts/dev.py up
+# passes every file with -f, so nobody edits this file to add a service.
+name: argus
+
+services:
+  db:
+    image: timescale/timescaledb-ha:pg16   # PostgreSQL 16 + TimescaleDB + pgvector
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-argus}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-argus-dev-password}
+      POSTGRES_DB: ${POSTGRES_DB:-argus}
+    ports: ["5432:5432"]
+    volumes: [db-data:/home/postgres/pgdata/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-argus}"]
+      interval: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 20
+
+  mqtt:
+    image: eclipse-mosquitto:2
+    ports: ["1883:1883"]
+    volumes: [../mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro]
+
+  backend:
+    build: {context: ../.., dockerfile: infra/docker/backend.Dockerfile}
+    env_file: [../../.env]
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-argus}:${POSTGRES_PASSWORD:-argus-dev-password}@db:5432/${POSTGRES_DB:-argus}
+      REDIS_URL: redis://redis:6379/0
+    ports: ["8000:8000"]
+    depends_on:
+      db: {condition: service_healthy}
+      redis: {condition: service_healthy}
+    volumes: [../../backend:/app/backend, ../../contracts:/app/contracts, ../../simulator:/app/simulator]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/ready')"]
+      interval: 10s
+      retries: 12
+
+  operator:
+    build: {context: ../../frontend, dockerfile: ../infra/docker/frontend.Dockerfile, args: {APP: operator}}
+    environment: {NEXT_PUBLIC_API_URL: "http://localhost:8000"}
+    ports: ["3000:3000"]
+    depends_on: [backend]
+
+  admin:
+    build: {context: ../../frontend, dockerfile: ../infra/docker/frontend.Dockerfile, args: {APP: admin}}
+    environment: {NEXT_PUBLIC_API_URL: "http://localhost:8000"}
+    ports: ["3001:3001"]
+    depends_on: [backend]
+
+volumes:
+  db-data:

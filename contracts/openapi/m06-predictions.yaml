@@ -1,0 +1,8 @@
+# Skeleton owned by M06. Replace in M06-WP0 (hand-written contract first, then generated from code
+# with `uv run python scripts/contracts.py export` once the module has a router).
+openapi: 3.1.0
+info:
+  title: M06 Operator Intelligence / ML API
+  version: 0.0.0
+  description: PLANNED. See docs/02-contracts/API_CATALOG.md section M06.
+paths: {}

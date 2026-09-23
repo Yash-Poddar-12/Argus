@@ -1,0 +1,10 @@
+{
+  "operator_id": "OP1001",
+  "name": "Ravi Kumar",
+  "site_id": "SITE_A",
+  "experience_level": "SENIOR",
+  "certification_status": "VALID",
+  "preferred_language": "hi",
+  "status": "ACTIVE",
+  "created_at": "2026-09-23T07:00:00Z"
+}

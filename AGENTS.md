@@ -66,7 +66,7 @@ frontend/apps/<app>/src/app/<route>/   frontend/apps/<app>/src/features/<feature
 1. Run `python scripts/status.py changes` to see which contracts and module statuses changed.
 2. If a contract you consume changed, adapt or record a blocker.
 3. Append a PULL entry to your own `docs/05-status/sync-log/<handle>.md`.
-   Shortcut: `python scripts/status.py log --person <handle> --action PULL --msg "<what you noticed>"`
+   Shortcut: `python scripts/status.py log --action PULL --msg "<what you noticed>"` (handle comes from `git config github.user`/`user.name`, or pass `--handle`)
 
 Full detail: `docs/04-workflow/SYNC_PROTOCOL.md`.
 
@@ -87,14 +87,18 @@ Proposed in `docs/01-architecture/adr/ADR-0001-tech-stack.md`. Check that ADR's 
 
 ## 8. Commands
 
-These will exist once Phase 0 (M00) is done. Until then, they're the target.
+`scripts/dev.py` works everywhere (no make/bash needed); `make <target>` is a thin wrapper around it.
 
 ```bash
-make up            # or: docker compose -f infra/compose/base.yml up
-make test          # all tests;  make test M=m04_safety  for one module
-make contracts     # validate contracts + regenerate api-client
-python scripts/status.py board     # live module status board
-python scripts/status.py changes   # what changed since your last pull
+uv sync                                   # Python deps (once)
+python scripts/dev.py api                 # backend in LITE mode: SQLite + in-memory bus, auto-seeded, :8000
+python scripts/dev.py web operator        # operator app :3000   (admin app: web admin -> :3001)
+python scripts/dev.py up                  # full stack via Docker Compose (Postgres/Timescale, Redis, MQTT)
+python scripts/dev.py test [m01_twin]     # tests (all, or one module)
+python scripts/dev.py contracts           # export OpenAPI from code + validate contracts + regenerate api-client
+python scripts/dev.py revision --module m01_twin -m "msg"   # migration on your module's Alembic branch
+python scripts/status.py board            # live module status board
+python scripts/status.py changes          # what changed since your last pull
 ```
 
 ## 9. Done means

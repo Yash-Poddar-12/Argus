@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/events/m00/platform.machine.created.v1.json",
+  "title": "platform.machine.created",
+  "description": "A machine was registered.",
+  "allOf": [
+    {
+      "$ref": "https://argus.local/contracts/events/m00/_defs.json#/$defs/Machine"
+    }
+  ]
+}

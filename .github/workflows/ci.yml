@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [develop, main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with: {python-version: "3.12"}
+      - run: uv sync --frozen
+      - name: Lint
+        run: uv run ruff check backend simulator scripts
+      - name: Contracts valid
+        run: uv run python scripts/contracts.py check
+      - name: OpenAPI contracts match code
+        run: uv run python scripts/contracts.py export --check
+      - name: Tests (SQLite + in-memory bus; includes migrations-vs-models check)
+        run: uv run pytest -q
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults: {run: {working-directory: frontend}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: {version: 9}
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: pnpm, cache-dependency-path: frontend/pnpm-lock.yaml}
+      - run: pnpm install --frozen-lockfile
+      - name: API client matches contracts
+        run: pnpm generate && git diff --exit-code -- packages/api-client/src/generated
+      - run: pnpm typecheck
+      - run: pnpm build
+        env: {NEXT_TELEMETRY_DISABLED: "1"}
+
+  status-reminder:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - name: Warn when module code changed without its STATUS.md
+        run: |
+          changed=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          echo "$changed" | grep -q "docs/03-modules/.*/STATUS.md" \
+            || echo "::warning::No module STATUS.md updated in this PR (docs/04-workflow/SYNC_PROTOCOL.md)"
