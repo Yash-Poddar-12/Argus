@@ -1,0 +1,72 @@
+/* @argus/ui design tokens (M00). Glove-friendly: min 48px targets, high contrast, large type. */
+:root {
+  --bg: #f6f5f1;
+  --surface: #ffffff;
+  --surface-2: #efede6;
+  --text: #1b1a17;
+  --text-muted: #5d5a52;
+  --border: #d9d5ca;
+  --brand: #f2b705;          /* safety yellow */
+  --brand-ink: #1b1a17;
+  --ok: #1f7a3d;
+  --warn: #a15c00;
+  --danger: #b3261e;
+  --info: #1d5fa8;
+  --radius: 10px;
+  --space: 16px;
+  --target: 48px;
+  --font: system-ui, "Segoe UI", "Noto Sans", "Noto Sans Devanagari", "Noto Sans Tamil", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121210;
+    --surface: #1c1b18;
+    --surface-2: #26241f;
+    --text: #f3f1ea;
+    --text-muted: #b4b0a4;
+    --border: #3a372f;
+    --ok: #4cc27a;
+    --warn: #f0a640;
+    --danger: #ff6b5e;
+    --info: #6aa8ff;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 17px; line-height: 1.45; }
+a { color: inherit; }
+button, input, select { font: inherit; }
+
+.ui-shell { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+.ui-nav { background: var(--surface); border-right: 1px solid var(--border); padding: var(--space); display: flex; flex-direction: column; gap: 4px; }
+.ui-brand { font-weight: 800; font-size: 1.2rem; padding: 8px 12px 16px; display: flex; align-items: center; gap: 8px; }
+.ui-brand-mark { width: 14px; height: 14px; border-radius: 3px; background: var(--brand); display: inline-block; }
+.ui-nav a { min-height: var(--target); display: flex; align-items: center; padding: 0 12px; border-radius: var(--radius); text-decoration: none; color: var(--text-muted); font-weight: 600; }
+.ui-nav a[aria-current="page"] { background: var(--brand); color: var(--brand-ink); }
+.ui-nav a:hover:not([aria-current="page"]) { background: var(--surface-2); color: var(--text); }
+.ui-nav-footer { margin-top: auto; display: grid; gap: 8px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.9rem; color: var(--text-muted); }
+.ui-main { padding: 24px; max-width: 1200px; width: 100%; }
+.ui-banner { padding: 10px 16px; border-radius: var(--radius); margin-bottom: 16px; font-weight: 600; }
+.ui-banner.warn { background: color-mix(in srgb, var(--warn) 18%, transparent); color: var(--warn); }
+.ui-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.ui-grid { display: grid; gap: var(--space); grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.ui-btn { min-height: var(--target); min-width: var(--target); padding: 0 20px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); color: var(--text); font-weight: 700; cursor: pointer; }
+.ui-btn.primary { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+.ui-btn.danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+.ui-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.ui-input { min-height: var(--target); padding: 0 12px; border-radius: var(--radius); border: 1px solid var(--border); background: var(--surface); color: var(--text); width: 100%; }
+.ui-badge { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font-size: 0.85rem; font-weight: 700; background: var(--surface-2); }
+.ui-badge.ok { color: var(--ok); } .ui-badge.warn { color: var(--warn); } .ui-badge.danger { color: var(--danger); } .ui-badge.info { color: var(--info); }
+.ui-stat-label { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.ui-stat-value { font-size: 1.8rem; font-weight: 800; }
+.ui-muted { color: var(--text-muted); }
+.ui-slot { border: 2px dashed var(--border); border-radius: var(--radius); padding: 32px; text-align: center; }
+.ui-center { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+.ui-stack { display: grid; gap: 12px; }
+
+@media (max-width: 800px) {
+  .ui-shell { grid-template-columns: 1fr; }
+  .ui-nav { flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--border); }
+  .ui-nav a { white-space: nowrap; }
+  .ui-brand, .ui-nav-footer { display: none; }
+  .ui-main { padding: 16px; }
+}
