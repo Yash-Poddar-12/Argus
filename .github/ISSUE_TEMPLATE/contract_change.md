@@ -5,7 +5,7 @@ title: "contract(MXX): <what changes>"
 labels: contract-change
 ---
 
-**Producer module:** MXX
+**Producer capability:** <area> (workstream MXX)
 **Contract file(s):** `contracts/...`
 **Current version → new version:** v1 → v2
 

@@ -18,12 +18,15 @@ jobs:
         with: {python-version: "3.12"}
       - run: uv sync --frozen
       - name: Lint
-        run: uv run ruff check backend simulator scripts
+        run: uv run ruff check backend scripts
       - name: Contracts valid
         run: uv run python scripts/contracts.py check
-      - name: OpenAPI contracts match code
+      - name: Generated contracts match code
         run: uv run python scripts/contracts.py export --check
-      - name: Tests (SQLite + in-memory bus; includes migrations-vs-models check)
+      - name: Migrations apply to a clean database
+        run: uv run alembic -c backend/alembic.ini upgrade head
+        env: {DATABASE_URL: "sqlite+aiosqlite:///./ci-migrations.db"}
+      - name: Tests (SQLite + in-memory bus; includes architecture rules)
         run: uv run pytest -q
 
   frontend:
@@ -36,11 +39,21 @@ jobs:
       - uses: actions/setup-node@v4
         with: {node-version: 22, cache: pnpm, cache-dependency-path: frontend/pnpm-lock.yaml}
       - run: pnpm install --frozen-lockfile
-      - name: API client matches contracts
-        run: pnpm generate && git diff --exit-code -- packages/api-client/src/generated
+      - name: API types match contracts
+        run: pnpm generate && git diff --exit-code -- src/lib/api/generated
+      - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm build
         env: {NEXT_TELEMETRY_DISABLED: "1"}
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compose file is valid
+        run: cp .env.example .env && docker compose config -q
+      - name: Images build
+        run: docker compose build backend frontend
 
   status-reminder:
     if: github.event_name == 'pull_request'
@@ -48,8 +61,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0}
-      - name: Warn when module code changed without its STATUS.md
+      - name: Warn when code changed without a workstream status update
         run: |
           changed=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
-          echo "$changed" | grep -q "docs/03-modules/.*/STATUS.md" \
-            || echo "::warning::No module STATUS.md updated in this PR (docs/04-workflow/SYNC_PROTOCOL.md)"
+          echo "$changed" | grep -q "docs/development/workstreams/" \
+            || echo "::warning::No workstream file updated in this PR (docs/development/SYNC_PROTOCOL.md)"

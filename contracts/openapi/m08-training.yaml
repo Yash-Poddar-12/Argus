@@ -1,8 +1,0 @@
-# Skeleton owned by M08. Replace in M08-WP0 (hand-written contract first, then generated from code
-# with `uv run python scripts/contracts.py export` once the module has a router).
-openapi: 3.1.0
-info:
-  title: M08 Training API
-  version: 0.0.0
-  description: PLANNED. See docs/02-contracts/API_CATALOG.md section M08.
-paths: {}

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/events/environment/environment.conditions.updated.v1.json",
+  "$comment": "GENERATED from app (environment) models by scripts/contracts.py export. Do not hand-edit.",
+  "properties": {
+    "weather": {
+      "default": "CLEAR",
+      "enum": [
+        "CLEAR",
+        "CLOUDY",
+        "RAIN",
+        "STORM",
+        "FOG"
+      ],
+      "title": "Weather",
+      "type": "string"
+    },
+    "temperature_c": {
+      "default": 30.0,
+      "title": "Temperature C",
+      "type": "number"
+    },
+    "rain_mm_h": {
+      "default": 0.0,
+      "minimum": 0,
+      "title": "Rain Mm H",
+      "type": "number"
+    },
+    "visibility": {
+      "default": "GOOD",
+      "enum": [
+        "GOOD",
+        "MODERATE",
+        "POOR"
+      ],
+      "title": "Visibility",
+      "type": "string"
+    },
+    "soil": {
+      "default": "DRY",
+      "enum": [
+        "DRY",
+        "WET",
+        "MUD",
+        "ROCKY"
+      ],
+      "title": "Soil",
+      "type": "string"
+    },
+    "site_id": {
+      "title": "Site Id",
+      "type": "string"
+    },
+    "zone_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Zone Id"
+    },
+    "source": {
+      "default": "MANUAL",
+      "title": "Source",
+      "type": "string"
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    }
+  },
+  "required": [
+    "site_id",
+    "as_of"
+  ],
+  "title": "EnvironmentUpdatedPayload",
+  "type": "object",
+  "description": "Payload of 'environment.conditions.updated' (producer: environment). "
+}

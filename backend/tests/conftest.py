@@ -1,4 +1,4 @@
-"""Shared test fixtures (M00). Module tests live in backend/tests/<module>/.
+"""Shared test fixtures. Tests are grouped by capability: core/, platform/, tasks/, twin/, iot/, integration/.
 
 Every test app runs with SQLite + in-memory bus/state and ``validate_events=True``: any event a
 module publishes that doesn't match its contract fails the request (producer conformance).
@@ -9,10 +9,10 @@ from __future__ import annotations
 import pytest
 from fastapi.testclient import TestClient
 
-from backend.core.app import create_app
-from backend.core.config import Settings
-from backend.modules.m00_platform.seed import DEMO_PASSWORD
-from backend.seed import seed_all
+from app.config import Settings
+from app.main import create_app
+from app.seed import seed_all
+from tests.helpers import login
 
 
 @pytest.fixture
@@ -29,21 +29,13 @@ def app(settings):
 @pytest.fixture
 def client(app):
     with TestClient(app) as c:
-        rt = app.state.runtime
-
-        c.portal.call(seed_all, rt.db)
+        c.portal.call(seed_all, app.state.runtime.db)
         yield c
 
 
 @pytest.fixture
 def runtime(app, client):
     return app.state.runtime
-
-
-def login(client: TestClient, username: str, password: str = DEMO_PASSWORD) -> dict[str, str]:
-    r = client.post("/api/v1/auth/login", json={"username": username, "password": password})
-    assert r.status_code == 200, r.text
-    return {"Authorization": f"Bearer {r.json()['access_token']}"}
 
 
 @pytest.fixture
@@ -54,7 +46,3 @@ def sup(client) -> dict[str, str]:
 @pytest.fixture
 def op1(client) -> dict[str, str]:
     return login(client, "op1001")
-
-
-def token_of(headers: dict[str, str]) -> str:
-    return headers["Authorization"].split(" ", 1)[1]

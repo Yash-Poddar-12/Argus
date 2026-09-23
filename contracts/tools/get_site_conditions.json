@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://argus.local/contracts/tools/get_site_conditions.json",
-  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "$comment": "GENERATED from app (copilot) models by scripts/contracts.py export. Do not hand-edit.",
   "title": "get_site_conditions",
   "description": "Site and zone conditions plus derived environmental difficulty.",
   "x-tool": {
     "name": "get_site_conditions",
     "version": "1.0",
-    "owner": "M01",
+    "owner": "environment",
     "permissions": [
       "OPERATOR:self",
       "SUPERVISOR_ADMIN:site"
@@ -104,6 +104,7 @@
       "type": "object"
     },
     "TwinEnvironment": {
+      "description": "Conditions as recorded for a site or zone (name kept for API compatibility).",
       "properties": {
         "weather": {
           "default": "CLEAR",

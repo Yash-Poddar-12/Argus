@@ -1,8 +1,8 @@
-## Module / work package
+## Workstream / work package / area
 
-- Module: `MXX — name`
-- WP: `MXX-WPn — title`
-- Branch type: feature / contract / fix / docs
+- Workstream: `MXX — name` · WP: `MXX-WPn — title`
+- Ownership area: A / B / C / D / E (docs/architecture/REPOSITORY_STRUCTURE.md §6)
+- Branch type: feature / contract / fix / refactor / docs
 
 ## What changed
 
@@ -11,25 +11,21 @@
 ## Contract changes
 
 - [ ] None
-- [ ] Additive (minor bump): list files + new version
+- [ ] Additive: list files (regenerated with `python scripts/dev.py contracts`)
 - [ ] Breaking: link the `contract_change` issue; list consumers and deprecation window
-
-## Dependencies
-
-- Uses mocks for:
-- Unblocks:
 
 ## Tests
 
-<!-- commands run + results -->
+<!-- commands run + results; `python scripts/dev.py check` for structural changes -->
 
 ## Screenshots / demo (UI or demo-path changes)
 
 ## Checklist
 
-- [ ] Only paths owned by my module (or my delegated slot) are changed
-- [ ] No imports of other modules' internals (only `public.py`, `backend/core`, contracts, generated client)
-- [ ] Module `STATUS.md` updated in this PR (WP state + Update log line)
+- [ ] Only my ownership area changed (shared paths: reviewed by area A + affected area)
+- [ ] No new folders without real code; no new top-level folder without an ADR
+- [ ] Layer rules respected (thin routes, other capabilities via service/schemas, Copilot via services, frontend via API only)
+- [ ] Workstream Status section updated (WP state + Update log line)
 - [ ] Catalog rows updated if an API/event/table/tool changed
 - [ ] Safety logic stays deterministic; Copilot facts come from tools (if relevant)
-- [ ] Meets `docs/04-workflow/DEFINITION_OF_DONE.md` for the WP (or state what's left)
+- [ ] Meets `docs/development/DEFINITION_OF_DONE.md` for the WP (or state what's left)

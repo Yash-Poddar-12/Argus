@@ -1,8 +1,0 @@
-# Skeleton owned by M09. Replace in M09-WP0 (hand-written contract first, then generated from code
-# with `uv run python scripts/contracts.py export` once the module has a router).
-openapi: 3.1.0
-info:
-  title: M09 Counterfactual Engine API
-  version: 0.0.0
-  description: PLANNED. See docs/02-contracts/API_CATALOG.md section M09.
-paths: {}

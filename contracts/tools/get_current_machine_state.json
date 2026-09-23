@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://argus.local/contracts/tools/get_current_machine_state.json",
-  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "$comment": "GENERATED from app (copilot) models by scripts/contracts.py export. Do not hand-edit.",
   "title": "get_current_machine_state",
   "description": "Live state of a machine from the operational twin.",
   "x-tool": {
     "name": "get_current_machine_state",
     "version": "1.0",
-    "owner": "M01",
+    "owner": "twin",
     "permissions": [
       "OPERATOR:self",
       "SUPERVISOR_ADMIN:site"

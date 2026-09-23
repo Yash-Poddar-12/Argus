@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/events/tasks/task.resumed.v1.json",
+  "$comment": "GENERATED from app (tasks) models by scripts/contracts.py export. Do not hand-edit.",
+  "properties": {
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "task_id": {
+      "title": "Task Id",
+      "type": "string"
+    },
+    "operator_id": {
+      "title": "Operator Id",
+      "type": "string"
+    },
+    "machine_id": {
+      "title": "Machine Id",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "PLANNED",
+        "ASSIGNED",
+        "IN_PROGRESS",
+        "PAUSED",
+        "COMPLETED",
+        "CANCELLED"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "at": {
+      "format": "date-time",
+      "title": "At",
+      "type": "string"
+    },
+    "pause_duration_s": {
+      "default": 0.0,
+      "title": "Pause Duration S",
+      "type": "number"
+    },
+    "cycles_done": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cycles Done"
+    }
+  },
+  "required": [
+    "session_id",
+    "task_id",
+    "operator_id",
+    "machine_id",
+    "status",
+    "at"
+  ],
+  "title": "TaskLifecyclePayload",
+  "type": "object",
+  "description": "Payload of 'task.resumed' (producer: tasks). "
+}

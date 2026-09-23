@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://argus.local/contracts/tools/get_weather.json",
-  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "$comment": "GENERATED from app (copilot) models by scripts/contracts.py export. Do not hand-edit.",
   "title": "get_weather",
   "description": "Current site-level weather/environment conditions.",
   "x-tool": {
     "name": "get_weather",
     "version": "1.0",
-    "owner": "M01",
+    "owner": "environment",
     "permissions": [
       "OPERATOR:self",
       "SUPERVISOR_ADMIN:site"

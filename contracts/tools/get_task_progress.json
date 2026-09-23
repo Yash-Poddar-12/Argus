@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://argus.local/contracts/tools/get_task_progress.json",
-  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "$comment": "GENERATED from app (copilot) models by scripts/contracts.py export. Do not hand-edit.",
   "title": "get_task_progress",
   "description": "Progress of a task: cycles done vs target, active time.",
   "x-tool": {
     "name": "get_task_progress",
     "version": "1.0",
-    "owner": "M01",
+    "owner": "tasks",
     "permissions": [
       "OPERATOR:self",
       "SUPERVISOR_ADMIN:site"

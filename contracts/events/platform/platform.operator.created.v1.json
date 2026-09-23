@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/events/platform/platform.operator.created.v1.json",
+  "title": "platform.operator.created",
+  "description": "An operator was created.",
+  "allOf": [
+    {
+      "$ref": "https://argus.local/contracts/events/platform/_defs.json#/$defs/Operator"
+    }
+  ]
+}

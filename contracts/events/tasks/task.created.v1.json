@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/events/tasks/task.created.v1.json",
+  "$comment": "GENERATED from app (tasks) models by scripts/contracts.py export. Do not hand-edit.",
+  "$defs": {
+    "AssistanceItem": {
+      "properties": {
+        "kind": {
+          "enum": [
+            "MACHINE",
+            "PERSON",
+            "RESOURCE",
+            "NOTE"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "resource_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resource Id"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "AssistanceItem",
+      "type": "object"
+    },
+    "TaskTarget": {
+      "properties": {
+        "unit": {
+          "enum": [
+            "cycles",
+            "m3",
+            "tonnes",
+            "minutes"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "exclusiveMinimum": 0,
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "unit",
+        "value"
+      ],
+      "title": "TaskTarget",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "task_id": {
+      "title": "Task Id",
+      "type": "string"
+    },
+    "site_id": {
+      "title": "Site Id",
+      "type": "string"
+    },
+    "zone_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Zone Id"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "task_type": {
+      "enum": [
+        "EXCAVATION",
+        "TRENCHING",
+        "LOADING",
+        "HAULING",
+        "GRADING",
+        "BACKFILLING",
+        "OTHER"
+      ],
+      "title": "Task Type",
+      "type": "string"
+    },
+    "priority": {
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ],
+      "title": "Priority",
+      "type": "string"
+    },
+    "target": {
+      "$ref": "#/$defs/TaskTarget"
+    },
+    "planned_start": {
+      "format": "date-time",
+      "title": "Planned Start",
+      "type": "string"
+    },
+    "planned_end": {
+      "format": "date-time",
+      "title": "Planned End",
+      "type": "string"
+    },
+    "assistance": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/AssistanceItem"
+      },
+      "title": "Assistance",
+      "type": "array"
+    },
+    "status": {
+      "enum": [
+        "PLANNED",
+        "ASSIGNED",
+        "IN_PROGRESS",
+        "PAUSED",
+        "COMPLETED",
+        "CANCELLED"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "created_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Created At"
+    },
+    "updated_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Updated At"
+    },
+    "changed_fields": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Changed Fields"
+    }
+  },
+  "required": [
+    "task_id",
+    "site_id",
+    "title",
+    "task_type",
+    "priority",
+    "target",
+    "planned_start",
+    "planned_end",
+    "status"
+  ],
+  "title": "TaskEventPayload",
+  "type": "object",
+  "description": "Payload of 'task.created' (producer: tasks). "
+}

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://argus.local/contracts/schemas/twin/operational-twin.json",
-  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "$comment": "GENERATED from app (twin) models by scripts/contracts.py export. Do not hand-edit.",
   "$defs": {
     "GeoPoint": {
       "properties": {
@@ -51,6 +51,7 @@
       "type": "object"
     },
     "TwinEnvironment": {
+      "description": "Conditions as recorded for a site or zone (name kept for API compatibility).",
       "properties": {
         "weather": {
           "default": "CLEAR",
@@ -156,7 +157,7 @@
       "type": "object"
     },
     "TwinIntelligence": {
-      "description": "Slots filled by other modules' events. Nullable: the twin is valid without M04/M06.",
+      "description": "Slots filled by other capabilities' events. Nullable: the twin is valid without them.",
       "properties": {
         "safety": {
           "anyOf": [
@@ -169,7 +170,7 @@
             }
           ],
           "default": null,
-          "description": "From M04 safety.event.raised",
+          "description": "From safety.event.raised",
           "title": "Safety"
         },
         "risk": {
@@ -183,7 +184,7 @@
             }
           ],
           "default": null,
-          "description": "From M06 prediction.risk.updated (evidence only)",
+          "description": "From prediction.risk.updated (evidence only)",
           "title": "Risk"
         },
         "eta": {
@@ -197,7 +198,7 @@
             }
           ],
           "default": null,
-          "description": "From M06 prediction.task_time.updated",
+          "description": "From prediction.task_time.updated",
           "title": "Eta"
         },
         "anomaly": {
@@ -211,7 +212,7 @@
             }
           ],
           "default": null,
-          "description": "From M06 operator.anomaly.detected",
+          "description": "From operator.anomaly.detected",
           "title": "Anomaly"
         },
         "productivity": {
@@ -534,7 +535,7 @@
             }
           ],
           "default": null,
-          "description": "Filled from M04 hazard mesh; null until then",
+          "description": "Filled from the IoT hazard mesh; null until then",
           "title": "Nearby Workers"
         },
         "congestion": {
@@ -552,7 +553,7 @@
             }
           ],
           "default": null,
-          "description": "Filled from M05 site intelligence; null until then",
+          "description": "Filled from site operational intelligence; null until then",
           "title": "Congestion"
         }
       },

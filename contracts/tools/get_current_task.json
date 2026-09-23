@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://argus.local/contracts/tools/get_current_task.json",
-  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "$comment": "GENERATED from app (copilot) models by scripts/contracts.py export. Do not hand-edit.",
   "title": "get_current_task",
   "description": "The operator's current (in-progress, paused or next assigned) task.",
   "x-tool": {
     "name": "get_current_task",
     "version": "1.0",
-    "owner": "M01",
+    "owner": "twin",
     "permissions": [
       "OPERATOR:self",
       "SUPERVISOR_ADMIN:site"

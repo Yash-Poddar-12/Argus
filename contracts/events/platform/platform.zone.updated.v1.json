@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/events/platform/platform.zone.updated.v1.json",
+  "title": "platform.zone.updated",
+  "description": "A zone was created or changed (changed_fields=['created'] on creation).",
+  "allOf": [
+    {
+      "$ref": "https://argus.local/contracts/events/platform/_defs.json#/$defs/Zone"
+    }
+  ],
+  "properties": {
+    "changed_fields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Fields changed by this update"
+    }
+  },
+  "required": [
+    "changed_fields"
+  ]
+}

@@ -1,106 +1,65 @@
-# CAT Operator & Site Intelligence Platform
+# ARGUS: CAT Operator & Site Intelligence Platform
 
-> **An operator-first Human-Machine Operational Intelligence platform.** It understands the operator, machine, task, and environment together, predicts what is likely to happen, assists through a grounded multilingual voice/dashboard Copilot, learns from outcomes, and gives supervisors site-level decision support.
-
-```text
-Machine + Human + Task + Environment → Operational Twin → Understand → Predict → Assist → Human Decision → Learn
-```
-
-**Pitch:** One Operational Twin, several specialized intelligence engines, one grounded Operator Copilot, and a continuous feedback loop from real-world outcomes.
-
----
-
-## Who uses it
-
-| Role | What they get |
-|------|---------------|
-| **Operator** (primary) | My Day, My Machine, My Tasks, My Safety, My Performance, My Training, AI Copilot (voice + multilingual) |
-| **Supervisor/Admin** (supporting) | Operator/machine/site CRUD, assignments, tasks and deadlines, site map, hazards, operational intelligence, what-if scenarios |
-
----
-
-## How we build it: modular, in parallel
-
-We're a team of 3–5 working **in parallel**, each on a different IDE or agent (Antigravity, Claude CLI, Codex CLI, …). The whole method is in **[`docs/01-architecture/MODULAR_WORKFLOW.md`](docs/01-architecture/MODULAR_WORKFLOW.md)**.
+> **Operator-first human-machine operational intelligence.** ARGUS understands the operator, machine, task and environment together (the **Operational Twin**), predicts what's likely to happen, assists through a grounded multilingual Copilot, and gives supervisors site-level decision support.
 
 ```text
-M00 Foundation ──► M01 Operational Twin ──► ┬─ M02 Operator UX      ┬─ M05 Site Intelligence ┬─ M09 Counterfactual
-   (Phase 0)          (Phase 1)             ├─ M03 Admin Console    ├─ M07 Copilot           ├─ M10 Federated ML
-                                            ├─ M04 IoT Hazard Mesh  └─ M08 Training          └─ M11 Analytics/Eval
-                                            └─ M06 Operator ML
-                       Gate G1: contracts v1 frozen → everything after this runs in parallel on mocks
+Operator + Machine + Task + Environment → Operational Twin → Contextual Intelligence → Operator + Site Decisions
 ```
 
-| Module | Spec | Status |
-|--------|------|--------|
-| M00 Foundation | [SPEC](docs/03-modules/M00-foundation/SPEC.md) | [STATUS](docs/03-modules/M00-foundation/STATUS.md) |
-| M01 Operational Twin | [SPEC](docs/03-modules/M01-operational-twin/SPEC.md) | [STATUS](docs/03-modules/M01-operational-twin/STATUS.md) |
-| M02 Operator Experience | [SPEC](docs/03-modules/M02-operator-experience/SPEC.md) | [STATUS](docs/03-modules/M02-operator-experience/STATUS.md) |
-| M03 Supervisor/Admin Console | [SPEC](docs/03-modules/M03-admin-console/SPEC.md) | [STATUS](docs/03-modules/M03-admin-console/STATUS.md) |
-| M04 IoT Hazard Mesh | [SPEC](docs/03-modules/M04-iot-hazard-mesh/SPEC.md) | [STATUS](docs/03-modules/M04-iot-hazard-mesh/STATUS.md) |
-| M05 Site Operational Intelligence | [SPEC](docs/03-modules/M05-site-intelligence/SPEC.md) | [STATUS](docs/03-modules/M05-site-intelligence/STATUS.md) |
-| M06 Operator Intelligence / ML | [SPEC](docs/03-modules/M06-operator-ml/SPEC.md) | [STATUS](docs/03-modules/M06-operator-ml/STATUS.md) |
-| M07 Copilot | [SPEC](docs/03-modules/M07-copilot/SPEC.md) | [STATUS](docs/03-modules/M07-copilot/STATUS.md) |
-| M08 Training | [SPEC](docs/03-modules/M08-training/SPEC.md) | [STATUS](docs/03-modules/M08-training/STATUS.md) |
-| M09 Counterfactual Engine | [SPEC](docs/03-modules/M09-counterfactual/SPEC.md) | [STATUS](docs/03-modules/M09-counterfactual/STATUS.md) |
-| M10 Federated Intelligence | [SPEC](docs/03-modules/M10-federated/SPEC.md) | [STATUS](docs/03-modules/M10-federated/STATUS.md) |
-| M11 Analytics & Evaluation | [SPEC](docs/03-modules/M11-analytics-eval/SPEC.md) | [STATUS](docs/03-modules/M11-analytics-eval/STATUS.md) |
+Two roles: **Operator** (own shift, machine, tasks, safety, performance, training, Copilot) and **Supervisor/Admin** (machines, assignments, tasks, site configuration, safety monitoring, site intelligence).
 
-Live board: `python scripts/status.py board`
+## Repository at a glance
 
----
+```text
+backend/     FastAPI app (package `app`): core · api/v1 · domain/<capability> · copilot · iot/simulator · seed
+frontend/    Next.js app: /operator and /supervisor areas · features/<feature> · components · lib
+ml/          ML research, training, evaluation (no API routes; backend calls it through interfaces)
+contracts/   openapi/ · events/<area>/ · tools/ · schemas/   (machine-readable source of truth)
+infra/       Docker service configs            docs/  product · architecture · development
+scripts/     dev.py (task runner) · contracts.py · status.py
+```
 
-## Getting started
+Where does code go? **[`docs/architecture/REPOSITORY_STRUCTURE.md`](docs/architecture/REPOSITORY_STRUCTURE.md)** (tree, "where does this belong?" table, dependency rules, ownership areas). Why it's shaped this way: [ADR-0002](docs/architecture/decisions/ADR-0002-production-repository-structure.md).
 
-### For humans
-
-1. Read [`AGENTS.md`](AGENTS.md). It's short and the rules apply to you too.
-2. Find your module(s) in [`docs/00-project/TEAM_AND_OWNERSHIP.md`](docs/00-project/TEAM_AND_OWNERSHIP.md).
-3. Read your module's `SPEC.md` and `STATUS.md`.
-4. Branch from `develop`: `git checkout -b feature/mXX-wpY-short-name`.
-5. Follow the push/pull status routine in [`docs/04-workflow/SYNC_PROTOCOL.md`](docs/04-workflow/SYNC_PROTOCOL.md).
-
-### For agents / IDEs
-
-| Tool | Auto-loaded file | Setup notes |
-|------|------------------|-------------|
-| Codex CLI | `AGENTS.md` | none |
-| Claude Code (CLI / IDE) | `CLAUDE.md` → imports `AGENTS.md` | none |
-| Antigravity | `AGENTS.md` / `GEMINI.md` (depends on version) | see [`AGENT_PLAYBOOK.md`](docs/04-workflow/AGENT_PLAYBOOK.md) |
-| Anything else | point it at `AGENTS.md` | starter prompt in the playbook |
-
-### Run locally
+## Run it
 
 Needs Python 3.12+ with [uv](https://docs.astral.sh/uv/) and Node 20+. Docker is optional.
 
 ```bash
 git clone https://github.com/Yash-Poddar-12/Argus.git && cd Argus
-uv sync
-python scripts/dev.py api            # backend, LITE mode (SQLite + in-memory bus), demo data seeded -> http://localhost:8000/docs
-python scripts/dev.py web operator   # operator app -> http://localhost:3000  (login op1001 / demo1234)
-python scripts/dev.py web admin      # admin app    -> http://localhost:3001  (login sup001 / demo1234)
-python scripts/dev.py sim --demo-g1  # Gate G1 demo: assign OP1001->EXC001->TASK001, pre-check, start, live telemetry
+python scripts/dev.py setup          # uv sync + frontend install
+python scripts/dev.py api            # backend (SQLite + in-memory bus, demo data) → http://localhost:8000/docs
+python scripts/dev.py web            # frontend → http://localhost:3000   (op1001 or sup001 / demo1234)
+python scripts/dev.py sim --demo-g1  # simulator: assign OP1001→EXC001→TASK001, pre-check, start, live telemetry
 
-# Full stack with Postgres/Timescale + Redis + MQTT (Docker):
-python scripts/dev.py env && python scripts/dev.py up
+python scripts/dev.py up             # full stack in Docker: Postgres/Timescale, Redis, MQTT, backend, frontend
+python scripts/dev.py check          # everything CI runs (lint, contracts, tests, frontend lint/typecheck/build)
 ```
 
----
+## Working on it (3–5 people, any IDE or agent)
 
-## Documentation map
+1. Read [`AGENTS.md`](AGENTS.md): the rules for humans and agents (Claude Code, Codex CLI, Antigravity, Gemini).
+2. Find your ownership area in [`REPOSITORY_STRUCTURE.md` §6](docs/architecture/REPOSITORY_STRUCTURE.md) and your workstream in [`docs/development/workstreams/`](docs/development/workstreams/README.md).
+3. Branch from `develop`, follow [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`docs/development/SYNC_PROTOCOL.md`](docs/development/SYNC_PROTOCOL.md) (status on every push/pull).
 
-See [`docs/INDEX.md`](docs/INDEX.md) for the full list and who owns each document.
+| Workstream | What it delivers | State |
+|------------|------------------|-------|
+| M00 Foundation | core, auth/RBAC, platform master data, tooling, CI, frontend shell | built |
+| M01 Operational Twin | tasks + lifecycle, telemetry, environment, twin, Copilot tools, simulator | built |
+| M02–M11 | operator UX, supervisor console, IoT hazard mesh, site intelligence, ML, Copilot, training, counterfactual, federated, evaluation | planned: see workstream files |
 
-| I want to… | Read |
-|------------|------|
-| Understand the product vision | [`MASTER_PROJECT_CONTEXT_AND_EXECUTION_PLAN.md`](MASTER_PROJECT_CONTEXT_AND_EXECUTION_PLAN.md) |
-| Know the non-negotiable principles | [`docs/00-project/PRODUCT_PRINCIPLES.md`](docs/00-project/PRODUCT_PRINCIPLES.md) |
-| See how parallel work is organized | [`docs/01-architecture/MODULAR_WORKFLOW.md`](docs/01-architecture/MODULAR_WORKFLOW.md) |
-| Find who owns a folder | [`docs/01-architecture/REPO_STRUCTURE.md`](docs/01-architecture/REPO_STRUCTURE.md) |
-| Change an API, event, or schema | [`docs/02-contracts/CONTRACTS_GUIDE.md`](docs/02-contracts/CONTRACTS_GUIDE.md) |
-| Know what to do on push/pull | [`docs/04-workflow/SYNC_PROTOCOL.md`](docs/04-workflow/SYNC_PROTOCOL.md) |
-| Open a PR | [`CONTRIBUTING.md`](CONTRIBUTING.md) |
+Live status board: `python scripts/status.py board`
+
+## Documentation
+
+| Need | Read |
+|------|------|
+| Product vision, principles, glossary | [`docs/product/`](docs/product/) |
+| Architecture, contracts, decisions | [`docs/architecture/`](docs/architecture/) |
+| How we work (parallel workflow, sync protocol, gates, DoD, agent playbook) | [`docs/development/`](docs/development/) |
+| Everything, indexed | [`docs/README.md`](docs/README.md) |
+| What changed | [`CHANGELOG.md`](CHANGELOG.md) |
 
 ## Non-goals
 
-Autonomous machine control, generic fleet management, HR performance scoring, a generic LMS, an unrestricted chatbot, predictive maintenance as the main product, fully autonomous dispatch, and raw-telemetry dashboards as the value proposition.
+Autonomous machine control, generic fleet management, HR performance scoring, a generic LMS, an unrestricted chatbot, predictive maintenance as the main product, fully autonomous dispatch, raw-telemetry dashboards as the value proposition.

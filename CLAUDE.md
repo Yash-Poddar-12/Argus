@@ -1,11 +1,11 @@
 # CLAUDE.md
 
-All project rules live in `AGENTS.md` so every IDE/agent follows the same rules. Claude Code loads that file through the import below.
+All project rules live in `AGENTS.md` so every IDE/agent follows the same rules. Claude Code loads it here:
 
 @AGENTS.md
 
 ## Claude Code notes
 
-- Put personal preferences in `CLAUDE.local.md` (gitignored), not here.
-- Before editing, confirm the module and its owned paths (`docs/01-architecture/REPO_STRUCTURE.md`). Refuse edits outside them and explain why.
-- When a task finishes, run or propose `python scripts/status.py log --module MXX --action PUSH --msg "..."` before pushing.
+- Personal preferences go in `CLAUDE.local.md` (gitignored), not here.
+- Before editing, check the ownership area and layer rules in `docs/architecture/REPOSITORY_STRUCTURE.md`. Don't edit outside them without saying why.
+- After structural changes run `python scripts/dev.py check`. Before pushing, run or propose `python scripts/status.py log --module MXX --action PUSH --msg "..."`.
