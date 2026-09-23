@@ -1,0 +1,35 @@
+# secrets / local config
+.env
+.env.*
+!*.env.example
+CLAUDE.local.md
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# node
+node_modules/
+.next/
+dist/
+coverage/
+
+# ml / data (large artifacts go to object storage)
+ml/datasets/
+ml/artifacts/
+*.joblib
+mlruns/
+
+# edge local buffer
+edge/**/*.sqlite
+
+# os / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

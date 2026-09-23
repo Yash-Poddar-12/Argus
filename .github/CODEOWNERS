@@ -1,0 +1,82 @@
+# CODEOWNERS: enforces path ownership (docs/01-architecture/REPO_STRUCTURE.md §2)
+# 1. Replace @m00-owner … @m11-owner with real GitHub handles (docs/00-project/TEAM_AND_OWNERSHIP.md).
+# 2. Uncomment the lines.
+# 3. Enable "Require review from Code Owners" on develop.
+# Later lines override earlier ones for the same path.
+
+# --- M00 Foundation ---
+# *                                   @m00-owner
+# /backend/core/                      @m00-owner
+# /backend/modules/m00_platform/      @m00-owner
+# /frontend/packages/ui/              @m00-owner
+# /infra/compose/base.yml             @m00-owner
+# /scripts/                           @m00-owner
+# /.github/                           @m00-owner
+# /contracts/schemas/common/          @m00-owner
+# /contracts/openapi/m00-platform.yaml @m00-owner
+# /contracts/events/m00/              @m00-owner
+
+# --- M01 Operational Twin ---
+# /backend/modules/m01_twin/          @m01-owner
+# /simulator/core/                    @m01-owner
+# /simulator/scenarios/core/          @m01-owner
+# /contracts/schemas/twin/            @m01-owner
+# /contracts/openapi/m01-twin.yaml    @m01-owner
+# /contracts/events/m01/              @m01-owner
+
+# --- M02 Operator app / M03 Admin app ---
+# /frontend/apps/operator/            @m02-owner
+# /frontend/apps/admin/               @m03-owner
+
+# --- M04 IoT Hazard Mesh ---
+# /edge/                              @m04-owner
+# /backend/modules/m04_safety/        @m04-owner
+# /simulator/scenarios/hazard/        @m04-owner
+# /contracts/openapi/m04-safety.yaml  @m04-owner
+# /contracts/events/m04/              @m04-owner
+
+# --- M05 Site Intelligence ---
+# /backend/modules/m05_site_intel/    @m05-owner
+# /simulator/scenarios/site/          @m05-owner
+# /contracts/events/m05/              @m05-owner
+# /frontend/apps/admin/src/app/site-intel/       @m05-slot-holder
+# /frontend/apps/admin/src/features/site-intel/  @m05-slot-holder
+
+# --- M06 Operator ML ---
+# /ml/                                @m06-owner
+# /backend/modules/m06_ml/            @m06-owner
+# /simulator/scenarios/behavior/      @m06-owner
+# /contracts/ml/                      @m06-owner
+# /contracts/events/m06/              @m06-owner
+
+# --- M07 Copilot ---
+# /backend/modules/m07_copilot/       @m07-owner
+# /knowledge/                         @m07-owner
+# /contracts/events/m07/              @m07-owner
+# /contracts/tools/_registry.json     @m07-owner
+# /frontend/apps/operator/src/app/copilot/       @m07-slot-holder
+# /frontend/apps/operator/src/features/copilot/  @m07-slot-holder
+
+# --- M08 Training ---
+# /backend/modules/m08_training/      @m08-owner
+# /content/training/                  @m08-owner
+# /contracts/events/m08/              @m08-owner
+# /frontend/apps/operator/src/app/training/      @m08-slot-holder
+# /frontend/apps/operator/src/features/training/ @m08-slot-holder
+
+# --- M09 / M10 / M11 ---
+# /backend/modules/m09_scenarios/     @m09-owner
+# /contracts/events/m09/              @m09-owner
+# /ml/federated/                      @m10-owner
+# /contracts/ml/federated/            @m10-owner
+# /analytics/                         @m11-owner
+# /backend/modules/m11_analytics/     @m11-owner
+
+# --- Per-module docs, migrations, tests, infra (repeat per module) ---
+# /docs/03-modules/M04-iot-hazard-mesh/  @m04-owner
+# /backend/migrations/m04_safety/        @m04-owner
+# /backend/tests/m04_safety/             @m04-owner
+# /infra/compose/m04.yml                 @m04-owner
+
+# --- Contracts: add a consumer reviewer for shared contracts ---
+# /contracts/                         @m00-owner @m01-owner
