@@ -79,6 +79,7 @@ uv sync
 python scripts/dev.py api            # backend, LITE mode (SQLite + in-memory bus), demo data seeded -> http://localhost:8000/docs
 python scripts/dev.py web operator   # operator app -> http://localhost:3000  (login op1001 / demo1234)
 python scripts/dev.py web admin      # admin app    -> http://localhost:3001  (login sup001 / demo1234)
+python scripts/dev.py sim --demo-g1  # Gate G1 demo: assign OP1001->EXC001->TASK001, pre-check, start, live telemetry
 
 # Full stack with Postgres/Timescale + Redis + MQTT (Docker):
 python scripts/dev.py env && python scripts/dev.py up

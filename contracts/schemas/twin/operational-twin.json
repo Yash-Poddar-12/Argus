@@ -1,0 +1,811 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/schemas/twin/operational-twin.json",
+  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "$defs": {
+    "GeoPoint": {
+      "properties": {
+        "lat": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Lat",
+          "type": "number"
+        },
+        "lon": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Lon",
+          "type": "number"
+        }
+      },
+      "required": [
+        "lat",
+        "lon"
+      ],
+      "title": "GeoPoint",
+      "type": "object"
+    },
+    "TaskTarget": {
+      "properties": {
+        "unit": {
+          "enum": [
+            "cycles",
+            "m3",
+            "tonnes",
+            "minutes"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "exclusiveMinimum": 0,
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "unit",
+        "value"
+      ],
+      "title": "TaskTarget",
+      "type": "object"
+    },
+    "TwinEnvironment": {
+      "properties": {
+        "weather": {
+          "default": "CLEAR",
+          "enum": [
+            "CLEAR",
+            "CLOUDY",
+            "RAIN",
+            "STORM",
+            "FOG"
+          ],
+          "title": "Weather",
+          "type": "string"
+        },
+        "temperature_c": {
+          "default": 30.0,
+          "title": "Temperature C",
+          "type": "number"
+        },
+        "rain_mm_h": {
+          "default": 0.0,
+          "minimum": 0,
+          "title": "Rain Mm H",
+          "type": "number"
+        },
+        "visibility": {
+          "default": "GOOD",
+          "enum": [
+            "GOOD",
+            "MODERATE",
+            "POOR"
+          ],
+          "title": "Visibility",
+          "type": "string"
+        },
+        "soil": {
+          "default": "DRY",
+          "enum": [
+            "DRY",
+            "WET",
+            "MUD",
+            "ROCKY"
+          ],
+          "title": "Soil",
+          "type": "string"
+        },
+        "zone_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zone Id"
+        },
+        "as_of": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "As Of"
+        }
+      },
+      "title": "TwinEnvironment",
+      "type": "object"
+    },
+    "TwinFreshness": {
+      "properties": {
+        "telemetry_age_s": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Telemetry Age S"
+        },
+        "environment_age_s": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Environment Age S"
+        }
+      },
+      "title": "TwinFreshness",
+      "type": "object"
+    },
+    "TwinIntelligence": {
+      "description": "Slots filled by other modules' events. Nullable: the twin is valid without M04/M06.",
+      "properties": {
+        "safety": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "From M04 safety.event.raised",
+          "title": "Safety"
+        },
+        "risk": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "From M06 prediction.risk.updated (evidence only)",
+          "title": "Risk"
+        },
+        "eta": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "From M06 prediction.task_time.updated",
+          "title": "Eta"
+        },
+        "anomaly": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "From M06 operator.anomaly.detected",
+          "title": "Anomaly"
+        },
+        "productivity": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Productivity"
+        },
+        "environmental_difficulty": {
+          "anyOf": [
+            {
+              "enum": [
+                "LOW",
+                "MEDIUM",
+                "HIGH"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Environmental Difficulty"
+        }
+      },
+      "title": "TwinIntelligence",
+      "type": "object"
+    },
+    "TwinMachineState": {
+      "properties": {
+        "machine_id": {
+          "title": "Machine Id",
+          "type": "string"
+        },
+        "machine_type": {
+          "title": "Machine Type",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "telemetry_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Telemetry At"
+        },
+        "operating_mode": {
+          "anyOf": [
+            {
+              "enum": [
+                "DIGGING",
+                "SWINGING",
+                "DUMPING",
+                "LOADING",
+                "HAULING",
+                "RETURNING",
+                "TRAVELLING",
+                "IDLE",
+                "OFF"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operating Mode"
+        },
+        "fuel_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fuel Pct"
+        },
+        "fuel_rate_lph": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fuel Rate Lph"
+        },
+        "speed_kmh": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Speed Kmh"
+        },
+        "rpm": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rpm"
+        },
+        "engine_hours": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Engine Hours"
+        },
+        "load_cycles": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Load Cycles"
+        },
+        "idle_seconds": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idle Seconds"
+        },
+        "temperature_c": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temperature C"
+        },
+        "seatbelt": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Seatbelt"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GeoPoint"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "health": {
+          "anyOf": [
+            {
+              "enum": [
+                "OK",
+                "WARNING",
+                "CRITICAL"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Health"
+        }
+      },
+      "required": [
+        "machine_id",
+        "machine_type",
+        "model"
+      ],
+      "title": "TwinMachineState",
+      "type": "object"
+    },
+    "TwinOperatorState": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "experience_level": {
+          "title": "Experience Level",
+          "type": "string"
+        },
+        "certification_status": {
+          "title": "Certification Status",
+          "type": "string"
+        },
+        "preferred_language": {
+          "default": "en",
+          "title": "Preferred Language",
+          "type": "string"
+        },
+        "machine_familiarity": {
+          "anyOf": [
+            {
+              "enum": [
+                "LOW",
+                "MEDIUM",
+                "HIGH"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Machine Familiarity"
+        }
+      },
+      "required": [
+        "name",
+        "status",
+        "experience_level",
+        "certification_status"
+      ],
+      "title": "TwinOperatorState",
+      "type": "object"
+    },
+    "TwinSiteContext": {
+      "properties": {
+        "zone_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zone Id"
+        },
+        "zone_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zone Type"
+        },
+        "active_machines": {
+          "default": 0,
+          "title": "Active Machines",
+          "type": "integer"
+        },
+        "nearby_workers": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Filled from M04 hazard mesh; null until then",
+          "title": "Nearby Workers"
+        },
+        "congestion": {
+          "anyOf": [
+            {
+              "enum": [
+                "LOW",
+                "MEDIUM",
+                "HIGH"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Filled from M05 site intelligence; null until then",
+          "title": "Congestion"
+        }
+      },
+      "title": "TwinSiteContext",
+      "type": "object"
+    },
+    "TwinState": {
+      "properties": {
+        "operator": {
+          "$ref": "#/$defs/TwinOperatorState"
+        },
+        "machine": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TwinMachineState"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "task": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TwinTaskState"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "environment": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TwinEnvironment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "site": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TwinSiteContext"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "operator"
+      ],
+      "title": "TwinState",
+      "type": "object"
+    },
+    "TwinTaskState": {
+      "properties": {
+        "task_id": {
+          "title": "Task Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "task_type": {
+          "enum": [
+            "EXCAVATION",
+            "TRENCHING",
+            "LOADING",
+            "HAULING",
+            "GRADING",
+            "BACKFILLING",
+            "OTHER"
+          ],
+          "title": "Task Type",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "PLANNED",
+            "ASSIGNED",
+            "IN_PROGRESS",
+            "PAUSED",
+            "COMPLETED",
+            "CANCELLED"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "zone_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zone Id"
+        },
+        "priority": {
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ],
+          "title": "Priority",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/TaskTarget"
+        },
+        "cycles_done": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cycles Done"
+        },
+        "progress_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Progress Pct"
+        },
+        "planned_start": {
+          "format": "date-time",
+          "title": "Planned Start",
+          "type": "string"
+        },
+        "planned_end": {
+          "format": "date-time",
+          "title": "Planned End",
+          "type": "string"
+        },
+        "session_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Session Id"
+        },
+        "actual_start": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Actual Start"
+        }
+      },
+      "required": [
+        "task_id",
+        "title",
+        "task_type",
+        "status",
+        "priority",
+        "target",
+        "planned_start",
+        "planned_end"
+      ],
+      "title": "TwinTaskState",
+      "type": "object"
+    }
+  },
+  "description": "Human-Machine Operational Twin: state layer + intelligence layer (master §4).",
+  "properties": {
+    "operator_id": {
+      "title": "Operator Id",
+      "type": "string"
+    },
+    "machine_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Machine Id"
+    },
+    "task_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Task Id"
+    },
+    "site_id": {
+      "title": "Site Id",
+      "type": "string"
+    },
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "state": {
+      "$ref": "#/$defs/TwinState"
+    },
+    "intelligence": {
+      "$ref": "#/$defs/TwinIntelligence"
+    },
+    "freshness": {
+      "$ref": "#/$defs/TwinFreshness"
+    }
+  },
+  "required": [
+    "operator_id",
+    "site_id",
+    "as_of",
+    "state",
+    "intelligence",
+    "freshness"
+  ],
+  "title": "OperationalTwin",
+  "type": "object"
+}

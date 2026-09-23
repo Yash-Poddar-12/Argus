@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/events/m01/twin.updated.v1.json",
+  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "properties": {
+    "operator_id": {
+      "title": "Operator Id",
+      "type": "string"
+    },
+    "machine_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Machine Id"
+    },
+    "task_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Task Id"
+    },
+    "reason": {
+      "title": "Reason",
+      "type": "string"
+    },
+    "changed": {
+      "description": "Top-level twin sections that changed, e.g. state.machine",
+      "items": {
+        "type": "string"
+      },
+      "title": "Changed",
+      "type": "array"
+    }
+  },
+  "required": [
+    "operator_id",
+    "reason",
+    "changed"
+  ],
+  "title": "TwinUpdatedPayload",
+  "type": "object",
+  "description": "Payload of 'twin.updated' (producer M01). "
+}

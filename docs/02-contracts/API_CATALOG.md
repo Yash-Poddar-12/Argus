@@ -3,44 +3,48 @@
 > Every REST and WebSocket endpoint, its owning module, and its known consumers. Base path `/api/v1`. The exact shapes are in `contracts/openapi/mXX-*.yaml`. **Edit only your module's section.** Paths must be unique across modules, so check here before adding one.
 >
 > Status: `PLANNED` → `MOCKED` → `LIVE` → `DEPRECATED`
+>
+> M00 and M01 endpoints are LIVE; their OpenAPI files are **generated from code** (`uv run python scripts/contracts.py export`). Interactive docs: `http://localhost:8000/docs`.
 
 ## M00 — Platform
 
 | Method | Path | Purpose | Consumers | Status |
 |--------|------|---------|-----------|--------|
-| POST | `/auth/login` | Login, returns JWT | M02, M03 | PLANNED |
-| GET | `/auth/me` | Current identity, role, permissions, site scope | M02, M03 | PLANNED |
-| GET/POST | `/operators` | List/create operators | M03 | PLANNED |
-| GET/PATCH | `/operators/{operator_id}` | Read/update operator | M02, M03, M07 | PLANNED |
-| GET/POST | `/machines` | List/create machines | M03 | PLANNED |
-| GET/PATCH | `/machines/{machine_id}` | Read/update machine master data | M02, M03 | PLANNED |
-| GET/POST | `/sites` | List/create sites | M03 | PLANNED |
-| GET/PATCH | `/sites/{site_id}` | Read/update site | M03 | PLANNED |
-| GET/POST | `/sites/{site_id}/zones` | Site zones (geometry, type) | M03, M04, M05 | PLANNED |
-| GET | `/health`, `/ready`, `/version`, `/metrics` | Observability (no `/api/v1` prefix) | infra | PLANNED |
+| POST | `/auth/login` | Login, returns JWT | M02, M03 | LIVE |
+| GET | `/auth/me` | Current identity, role, permissions, site scope | M02, M03 | LIVE |
+| GET/POST | `/operators` | List/create operators | M03 | LIVE |
+| GET/PATCH | `/operators/{operator_id}` | Read/update operator | M02, M03, M07 | LIVE |
+| GET/POST | `/machines` | List/create machines | M03 | LIVE |
+| GET/PATCH | `/machines/{machine_id}` | Read/update machine master data | M02, M03 | LIVE |
+| GET/POST | `/sites` | List/create sites | M03 | LIVE |
+| GET/PATCH | `/sites/{site_id}` | Read/update site | M03 | LIVE |
+| GET/POST | `/sites/{site_id}/zones` | Site zones (geometry, type) | M03, M04, M05 | LIVE |
+| PATCH | `/sites/{site_id}/zones/{zone_id}` | Update zone | M03 | LIVE |
+| GET | `/health`, `/ready`, `/version`, `/metrics` | Observability (no `/api/v1` prefix) | infra | LIVE |
 
 ## M01 — Operational Twin & core domain
 
 | Method | Path | Purpose | Consumers | Status |
 |--------|------|---------|-----------|--------|
-| POST | `/tasks` | Create task | M03 | PLANNED |
-| GET/PATCH | `/tasks/{task_id}` | Read/update task (deadline, target, assistance) | M02, M03, M07 | PLANNED |
-| GET | `/sites/{site_id}/tasks` | Site task list (filters) | M03 | PLANNED |
-| POST | `/tasks/{task_id}/assign` | Shortcut: create assignment | M03 | PLANNED |
-| POST | `/assignments` | Assign operator + machine to task | M03 | PLANNED |
-| PATCH | `/assignments/{assignment_id}` | Update/cancel assignment | M03 | PLANNED |
-| GET | `/operators/{operator_id}/tasks/today` | Operator's tasks for today | M02, M07 | PLANNED |
-| POST | `/operators/{operator_id}/machine/confirm` | Confirm assigned machine (T02) | M02 | PLANNED |
-| GET | `/machines/{machine_id}/precheck` | Pre-op checklist template | M02 | PLANNED |
-| POST | `/machines/{machine_id}/precheck` | Submit pre-op check (T03) | M02 | PLANNED |
-| POST | `/tasks/{task_id}/start` · `/pause` · `/resume` · `/complete` | Task session lifecycle (T05, T08–T10) | M02 | PLANNED |
-| GET | `/tasks/{task_id}/summary` | Post-task summary (T11) | M02 | PLANNED |
-| POST | `/telemetry` | Ingest machine telemetry batch (simulator / edge forwarder) | simulator, M04 edge | PLANNED |
-| GET | `/machines/{machine_id}/state` | Current machine state | M02, M03, M07 | PLANNED |
-| GET | `/machines/{machine_id}/telemetry` | Telemetry history (time range) | M02, M03, M06 | PLANNED |
-| GET | `/operators/{operator_id}/twin` | Current operational twin (state + intelligence layer) | M02, M07, M09 | PLANNED |
-| GET | `/sites/{site_id}/twin` | Site-level twin snapshot (all active twins) | M03, M05, M09 | PLANNED |
-| GET | `/sites/{site_id}/conditions` | Environment + site conditions | M02, M07 | PLANNED |
+| POST | `/tasks` | Create task | M03 | LIVE |
+| GET/PATCH | `/tasks/{task_id}` | Read/update task (deadline, target, assistance) | M02, M03, M07 | LIVE |
+| GET | `/sites/{site_id}/tasks` | Site task list (filters) | M03 | LIVE |
+| POST | `/tasks/{task_id}/assign` | Shortcut: create assignment | M03 | LIVE |
+| POST | `/assignments` | Assign operator + machine to task | M03 | LIVE |
+| PATCH | `/assignments/{assignment_id}` | Update/cancel assignment | M03 | LIVE |
+| GET | `/operators/{operator_id}/tasks/today` | Operator's tasks for today | M02, M07 | LIVE |
+| POST | `/operators/{operator_id}/machine/confirm` | Confirm assigned machine (T02) | M02 | LIVE |
+| GET | `/machines/{machine_id}/precheck` | Pre-op checklist template | M02 | LIVE |
+| POST | `/machines/{machine_id}/precheck` | Submit pre-op check (T03) | M02 | LIVE |
+| POST | `/tasks/{task_id}/start` · `/pause` · `/resume` · `/complete` | Task session lifecycle (T05, T08–T10) | M02 | LIVE |
+| GET | `/tasks/{task_id}/summary` | Post-task summary (T11) | M02 | LIVE |
+| POST | `/telemetry` | Ingest machine telemetry batch (simulator / edge forwarder) | simulator, M04 edge | LIVE |
+| GET | `/machines/{machine_id}/state` | Current machine state | M02, M03, M07 | LIVE |
+| GET | `/machines/{machine_id}/telemetry` | Telemetry history (time range) | M02, M03, M06 | LIVE |
+| GET | `/operators/{operator_id}/twin` | Current operational twin (state + intelligence layer) | M02, M07, M09 | LIVE |
+| GET | `/sites/{site_id}/twin` | Site-level twin snapshot (all active twins) | M03, M05, M09 | LIVE |
+| GET | `/sites/{site_id}/conditions` | Environment + site conditions | M02, M07 | LIVE |
+| POST | `/sites/{site_id}/conditions` | Record conditions (simulator, supervisor, future weather provider) | simulator, M03 | LIVE |
 
 ## M04 — IoT Hazard Mesh / Safety
 

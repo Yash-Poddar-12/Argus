@@ -1,0 +1,91 @@
+{
+  "operator_id": "OP1001",
+  "machine_id": "EXC001",
+  "task_id": "TASK001",
+  "site_id": "SITE_A",
+  "as_of": "2026-09-23T02:40:02Z",
+  "state": {
+    "operator": {
+      "name": "Ravi Kumar",
+      "status": "ACTIVE",
+      "experience_level": "SENIOR",
+      "certification_status": "VALID",
+      "preferred_language": "hi",
+      "machine_familiarity": "HIGH"
+    },
+    "machine": {
+      "machine_id": "EXC001",
+      "machine_type": "EXCAVATOR",
+      "model": "CAT 320",
+      "telemetry_at": "2026-09-23T02:40:00Z",
+      "operating_mode": "DIGGING",
+      "fuel_pct": 61.8,
+      "fuel_rate_lph": 14.2,
+      "speed_kmh": 0.0,
+      "rpm": 1650.0,
+      "engine_hours": 4210.7,
+      "load_cycles": 1034,
+      "idle_seconds": 5120.0,
+      "temperature_c": 86.5,
+      "seatbelt": true,
+      "location": {
+        "lat": 12.97163,
+        "lon": 77.59462
+      },
+      "health": "OK"
+    },
+    "task": {
+      "task_id": "TASK001",
+      "title": "Excavation — Zone A",
+      "task_type": "EXCAVATION",
+      "status": "IN_PROGRESS",
+      "zone_id": "ZONE_A",
+      "priority": "HIGH",
+      "target": {
+        "unit": "cycles",
+        "value": 50.0
+      },
+      "cycles_done": 24,
+      "progress_pct": 48.0,
+      "planned_start": "2026-09-23T02:30:00Z",
+      "planned_end": "2026-09-23T05:00:00Z",
+      "session_id": "3f0d7c1e-2b1a-4c55-9d7e-2f1f0a6b9c11",
+      "actual_start": "2026-09-23T02:35:00Z"
+    },
+    "environment": {
+      "weather": "RAIN",
+      "temperature_c": 31.0,
+      "rain_mm_h": 2.5,
+      "visibility": "GOOD",
+      "soil": "WET",
+      "zone_id": null,
+      "as_of": "2026-09-23T02:00:00Z"
+    },
+    "site": {
+      "zone_id": "ZONE_A",
+      "zone_type": "TASK",
+      "active_machines": 3,
+      "nearby_workers": null,
+      "congestion": null
+    }
+  },
+  "intelligence": {
+    "safety": null,
+    "risk": null,
+    "eta": {
+      "task_id": "TASK001",
+      "p50_duration_min": 92,
+      "confidence_level": "HIGH",
+      "source": "M06"
+    },
+    "anomaly": null,
+    "productivity": {
+      "state": "NORMAL"
+    },
+    "environmental_difficulty": "MEDIUM"
+  },
+  "freshness": {
+    "telemetry_age_s": 2.0,
+    "environment_age_s": 2402.0
+  }
+}

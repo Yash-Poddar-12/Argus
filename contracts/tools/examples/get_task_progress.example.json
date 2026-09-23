@@ -1,0 +1,17 @@
+{
+  "input": {
+    "task_id": "TASK001"
+  },
+  "output": {
+    "task_id": "TASK001",
+    "status": "IN_PROGRESS",
+    "progress_pct": 48.0,
+    "cycles_done": 24,
+    "target": {
+      "unit": "cycles",
+      "value": 50.0
+    },
+    "active_minutes": 65.0,
+    "planned_end": "2026-09-23T05:00:00Z"
+  }
+}

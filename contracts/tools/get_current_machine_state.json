@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/tools/get_current_machine_state.json",
+  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "title": "get_current_machine_state",
+  "description": "Live state of a machine from the operational twin.",
+  "x-tool": {
+    "name": "get_current_machine_state",
+    "version": "1.0",
+    "owner": "M01",
+    "permissions": [
+      "OPERATOR:self",
+      "SUPERVISOR_ADMIN:site"
+    ],
+    "safety_critical": false,
+    "latency_budget_ms": 500
+  },
+  "type": "object",
+  "required": [
+    "input",
+    "output"
+  ],
+  "properties": {
+    "input": {
+      "$ref": "#/$defs/MachineIdInput"
+    },
+    "output": {
+      "$ref": "#/$defs/TwinMachineState"
+    }
+  },
+  "$defs": {
+    "GeoPoint": {
+      "properties": {
+        "lat": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "Lat",
+          "type": "number"
+        },
+        "lon": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Lon",
+          "type": "number"
+        }
+      },
+      "required": [
+        "lat",
+        "lon"
+      ],
+      "title": "GeoPoint",
+      "type": "object"
+    },
+    "MachineIdInput": {
+      "properties": {
+        "machine_id": {
+          "title": "Machine Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "machine_id"
+      ],
+      "title": "MachineIdInput",
+      "type": "object"
+    },
+    "TwinMachineState": {
+      "properties": {
+        "machine_id": {
+          "title": "Machine Id",
+          "type": "string"
+        },
+        "machine_type": {
+          "title": "Machine Type",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "telemetry_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Telemetry At"
+        },
+        "operating_mode": {
+          "anyOf": [
+            {
+              "enum": [
+                "DIGGING",
+                "SWINGING",
+                "DUMPING",
+                "LOADING",
+                "HAULING",
+                "RETURNING",
+                "TRAVELLING",
+                "IDLE",
+                "OFF"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operating Mode"
+        },
+        "fuel_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fuel Pct"
+        },
+        "fuel_rate_lph": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fuel Rate Lph"
+        },
+        "speed_kmh": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Speed Kmh"
+        },
+        "rpm": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rpm"
+        },
+        "engine_hours": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Engine Hours"
+        },
+        "load_cycles": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Load Cycles"
+        },
+        "idle_seconds": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Idle Seconds"
+        },
+        "temperature_c": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temperature C"
+        },
+        "seatbelt": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Seatbelt"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GeoPoint"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "health": {
+          "anyOf": [
+            {
+              "enum": [
+                "OK",
+                "WARNING",
+                "CRITICAL"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Health"
+        }
+      },
+      "required": [
+        "machine_id",
+        "machine_type",
+        "model"
+      ],
+      "title": "TwinMachineState",
+      "type": "object"
+    }
+  }
+}

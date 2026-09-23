@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/tools/get_weather.json",
+  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "title": "get_weather",
+  "description": "Current site-level weather/environment conditions.",
+  "x-tool": {
+    "name": "get_weather",
+    "version": "1.0",
+    "owner": "M01",
+    "permissions": [
+      "OPERATOR:self",
+      "SUPERVISOR_ADMIN:site"
+    ],
+    "safety_critical": false,
+    "latency_budget_ms": 500
+  },
+  "type": "object",
+  "required": [
+    "input",
+    "output"
+  ],
+  "properties": {
+    "input": {
+      "$ref": "#/$defs/SiteIdInput"
+    },
+    "output": {
+      "$ref": "#/$defs/EnvironmentConditions"
+    }
+  },
+  "$defs": {
+    "EnvironmentConditions": {
+      "properties": {
+        "weather": {
+          "default": "CLEAR",
+          "enum": [
+            "CLEAR",
+            "CLOUDY",
+            "RAIN",
+            "STORM",
+            "FOG"
+          ],
+          "title": "Weather",
+          "type": "string"
+        },
+        "temperature_c": {
+          "default": 30.0,
+          "title": "Temperature C",
+          "type": "number"
+        },
+        "rain_mm_h": {
+          "default": 0.0,
+          "minimum": 0,
+          "title": "Rain Mm H",
+          "type": "number"
+        },
+        "visibility": {
+          "default": "GOOD",
+          "enum": [
+            "GOOD",
+            "MODERATE",
+            "POOR"
+          ],
+          "title": "Visibility",
+          "type": "string"
+        },
+        "soil": {
+          "default": "DRY",
+          "enum": [
+            "DRY",
+            "WET",
+            "MUD",
+            "ROCKY"
+          ],
+          "title": "Soil",
+          "type": "string"
+        }
+      },
+      "title": "EnvironmentConditions",
+      "type": "object"
+    },
+    "SiteIdInput": {
+      "properties": {
+        "site_id": {
+          "title": "Site Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "site_id"
+      ],
+      "title": "SiteIdInput",
+      "type": "object"
+    }
+  }
+}

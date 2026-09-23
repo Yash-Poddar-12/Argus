@@ -1,0 +1,26 @@
+{
+  "input": {
+    "operator_id": "OP1001"
+  },
+  "output": {
+    "operator_id": "OP1001",
+    "task": {
+      "task_id": "TASK001",
+      "title": "Excavation — Zone A",
+      "task_type": "EXCAVATION",
+      "status": "IN_PROGRESS",
+      "zone_id": "ZONE_A",
+      "priority": "HIGH",
+      "target": {
+        "unit": "cycles",
+        "value": 50.0
+      },
+      "cycles_done": 24,
+      "progress_pct": 48.0,
+      "planned_start": "2026-09-23T02:30:00Z",
+      "planned_end": "2026-09-23T05:00:00Z",
+      "session_id": "3f0d7c1e-2b1a-4c55-9d7e-2f1f0a6b9c11",
+      "actual_start": "2026-09-23T02:35:00Z"
+    }
+  }
+}

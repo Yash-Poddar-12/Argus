@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/tools/get_current_task.json",
+  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "title": "get_current_task",
+  "description": "The operator's current (in-progress, paused or next assigned) task.",
+  "x-tool": {
+    "name": "get_current_task",
+    "version": "1.0",
+    "owner": "M01",
+    "permissions": [
+      "OPERATOR:self",
+      "SUPERVISOR_ADMIN:site"
+    ],
+    "safety_critical": false,
+    "latency_budget_ms": 500
+  },
+  "type": "object",
+  "required": [
+    "input",
+    "output"
+  ],
+  "properties": {
+    "input": {
+      "$ref": "#/$defs/OperatorIdInput"
+    },
+    "output": {
+      "$ref": "#/$defs/CurrentTaskOutput"
+    }
+  },
+  "$defs": {
+    "CurrentTaskOutput": {
+      "properties": {
+        "operator_id": {
+          "title": "Operator Id",
+          "type": "string"
+        },
+        "task": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TwinTaskState"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "operator_id"
+      ],
+      "title": "CurrentTaskOutput",
+      "type": "object"
+    },
+    "OperatorIdInput": {
+      "properties": {
+        "operator_id": {
+          "title": "Operator Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "operator_id"
+      ],
+      "title": "OperatorIdInput",
+      "type": "object"
+    },
+    "TaskTarget": {
+      "properties": {
+        "unit": {
+          "enum": [
+            "cycles",
+            "m3",
+            "tonnes",
+            "minutes"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "exclusiveMinimum": 0,
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "unit",
+        "value"
+      ],
+      "title": "TaskTarget",
+      "type": "object"
+    },
+    "TwinTaskState": {
+      "properties": {
+        "task_id": {
+          "title": "Task Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "task_type": {
+          "enum": [
+            "EXCAVATION",
+            "TRENCHING",
+            "LOADING",
+            "HAULING",
+            "GRADING",
+            "BACKFILLING",
+            "OTHER"
+          ],
+          "title": "Task Type",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "PLANNED",
+            "ASSIGNED",
+            "IN_PROGRESS",
+            "PAUSED",
+            "COMPLETED",
+            "CANCELLED"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "zone_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zone Id"
+        },
+        "priority": {
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ],
+          "title": "Priority",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/TaskTarget"
+        },
+        "cycles_done": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cycles Done"
+        },
+        "progress_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Progress Pct"
+        },
+        "planned_start": {
+          "format": "date-time",
+          "title": "Planned Start",
+          "type": "string"
+        },
+        "planned_end": {
+          "format": "date-time",
+          "title": "Planned End",
+          "type": "string"
+        },
+        "session_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Session Id"
+        },
+        "actual_start": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Actual Start"
+        }
+      },
+      "required": [
+        "task_id",
+        "title",
+        "task_type",
+        "status",
+        "priority",
+        "target",
+        "planned_start",
+        "planned_end"
+      ],
+      "title": "TwinTaskState",
+      "type": "object"
+    }
+  }
+}

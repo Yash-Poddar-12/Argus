@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/tools/get_task_progress.json",
+  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "title": "get_task_progress",
+  "description": "Progress of a task: cycles done vs target, active time.",
+  "x-tool": {
+    "name": "get_task_progress",
+    "version": "1.0",
+    "owner": "M01",
+    "permissions": [
+      "OPERATOR:self",
+      "SUPERVISOR_ADMIN:site"
+    ],
+    "safety_critical": false,
+    "latency_budget_ms": 500
+  },
+  "type": "object",
+  "required": [
+    "input",
+    "output"
+  ],
+  "properties": {
+    "input": {
+      "$ref": "#/$defs/TaskIdInput"
+    },
+    "output": {
+      "$ref": "#/$defs/TaskProgressOutput"
+    }
+  },
+  "$defs": {
+    "TaskIdInput": {
+      "properties": {
+        "task_id": {
+          "title": "Task Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id"
+      ],
+      "title": "TaskIdInput",
+      "type": "object"
+    },
+    "TaskProgressOutput": {
+      "properties": {
+        "task_id": {
+          "title": "Task Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "PLANNED",
+            "ASSIGNED",
+            "IN_PROGRESS",
+            "PAUSED",
+            "COMPLETED",
+            "CANCELLED"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "progress_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Progress Pct"
+        },
+        "cycles_done": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cycles Done"
+        },
+        "target": {
+          "$ref": "#/$defs/TaskTarget"
+        },
+        "active_minutes": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Active Minutes"
+        },
+        "planned_end": {
+          "format": "date-time",
+          "title": "Planned End",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "status",
+        "target",
+        "planned_end"
+      ],
+      "title": "TaskProgressOutput",
+      "type": "object"
+    },
+    "TaskTarget": {
+      "properties": {
+        "unit": {
+          "enum": [
+            "cycles",
+            "m3",
+            "tonnes",
+            "minutes"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "exclusiveMinimum": 0,
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "unit",
+        "value"
+      ],
+      "title": "TaskTarget",
+      "type": "object"
+    }
+  }
+}

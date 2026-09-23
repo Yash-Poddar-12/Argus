@@ -18,6 +18,16 @@ contracts/
 
 Every schema file has an `examples/` sibling with at least one valid example. **Mocks return these examples**, so mocks and contracts can't drift.
 
+### Hand-written vs generated
+
+| Kind | How it's produced | Drift protection |
+|------|-------------------|------------------|
+| OpenAPI per module | **Generated** from the module's FastAPI router by `uv run python scripts/contracts.py export` | CI runs `export --check`; the build fails if code and file differ |
+| Event / tool / twin schemas of modules that define `contract_documents()` in `module.py` (M01 today) | **Generated** from pydantic models by the same command | same |
+| Everything else (M00 events, other modules' WP0 contracts) | Hand-written JSON Schema | `contracts.py check` (valid schema + valid examples) and publish-time validation in tests |
+
+In tests the event bus runs with `validate_events=True`: publishing a payload that doesn't match its contract (or an event with **no** contract) fails the test. This is the producer-conformance check.
+
 ## 2. Naming
 
 | Thing | Convention | Example |

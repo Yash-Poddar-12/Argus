@@ -1,0 +1,17 @@
+{
+  "machine_id": "EXC001",
+  "ts": "2026-09-23T02:40:00Z",
+  "engine_hours": 4210.7,
+  "fuel_pct": 61.8,
+  "fuel_rate_lph": 14.2,
+  "load_cycles": 1034,
+  "idle_seconds": 5120.0,
+  "speed_kmh": 0.0,
+  "rpm": 1650.0,
+  "temperature_c": 86.5,
+  "lat": 12.97163,
+  "lon": 77.59462,
+  "operating_mode": "DIGGING",
+  "seatbelt": true,
+  "site_id": "SITE_A"
+}

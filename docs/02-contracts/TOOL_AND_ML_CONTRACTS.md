@@ -11,12 +11,12 @@
 
 | Tool | Owner | Backed by | Status |
 |------|-------|-----------|--------|
-| `get_current_machine_state(machine_id)` | M01 | twin / Redis | PLANNED |
-| `get_current_task(operator_id)` | M01 | tasks + session | PLANNED |
-| `get_task_progress(task_id)` | M01 | session + telemetry | PLANNED |
-| `get_machine_health(machine_id)` | M01 | telemetry-derived state | PLANNED |
-| `get_weather(site_id)` | M01 | environment adapter | PLANNED |
-| `get_site_conditions(site_id, zone_id?)` | M01 | environment + zone state | PLANNED |
+| `get_current_machine_state(machine_id)` | M01 | twin / Redis | LIVE |
+| `get_current_task(operator_id)` | M01 | tasks + session | LIVE |
+| `get_task_progress(task_id)` | M01 | session + telemetry | LIVE |
+| `get_machine_health(machine_id)` | M01 | telemetry-derived state | LIVE |
+| `get_weather(site_id)` | M01 | environment adapter | LIVE |
+| `get_site_conditions(site_id, zone_id?)` | M01 | environment + zone state | LIVE |
 | `get_safety_index(operator_id)` | M04 | live rule state + M06 risk evidence | PLANNED |
 | `get_recent_alerts(operator_id, since?)` | M04 | safety_events | PLANNED |
 | `get_alert_details(safety_event_id)` | M04 | safety_events (why: rule, values, thresholds) | PLANNED |
@@ -32,19 +32,23 @@
 
 ### Tool schema shape (`contracts/tools/<tool_name>.json`)
 
+One JSON Schema per tool that validates a whole call, `{"input": ..., "output": ...}`, plus metadata in `x-tool`. The example file `contracts/tools/examples/<tool>.example.json` is one real call. M01's tool schemas are **generated from its pydantic models** (`TOOL_SPECS` in `backend/modules/m01_twin/public.py`); other owners may hand-write theirs in the same shape.
+
 ```json
 {
-  "name": "predict_task_duration",
-  "version": "1.0",
-  "owner": "M06",
-  "description": "Predict remaining duration for a task given current operator/machine/context.",
-  "input_schema":  { "type": "object", "properties": { "task_id": { "type": "string" } }, "required": ["task_id"] },
-  "output_schema": { "$ref": "../ml/task-prediction.v1.json" },
-  "permissions": ["OPERATOR:self", "SUPERVISOR_ADMIN:site"],
-  "safety_critical": false,
-  "latency_budget_ms": 800
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/tools/get_task_progress.json",
+  "title": "get_task_progress",
+  "x-tool": {"name": "get_task_progress", "version": "1.0", "owner": "M01",
+             "permissions": ["OPERATOR:self", "SUPERVISOR_ADMIN:site"], "safety_critical": false, "latency_budget_ms": 500},
+  "type": "object",
+  "required": ["input", "output"],
+  "properties": {"input": {"$ref": "#/$defs/TaskIdInput"}, "output": {"$ref": "#/$defs/TaskProgressOutput"}},
+  "$defs": {"...": "..."}
 }
 ```
+
+Owners implement tools behind their `public.py` (M01: `call_tool(name, arguments)`), and M07 calls them there.
 
 `safety_critical: true` tools (e.g., `get_safety_index`) must return deterministic rule state. The Copilot may **relay** these results but never **override** them.
 

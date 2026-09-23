@@ -26,25 +26,25 @@ Stream placement: M01's `operator.task.assigned` goes on `assignment.events`, `s
 
 | Event type | Payload (key fields) | Consumers | Status |
 |------------|----------------------|-----------|--------|
-| `platform.operator.created` / `.updated` | operator_id, site_id, experience_level, certification_status, status | M01, M06, M08 | PLANNED |
-| `platform.machine.created` / `.updated` | machine_id, machine_type, model, site_id, status, engine_hours | M01, M04, M05 | PLANNED |
-| `platform.site.created` / `.updated` | site_id, configuration | M04, M05 | PLANNED |
-| `platform.zone.updated` | site_id, zone_id, zone_type, geometry | M04, M05, M01 | PLANNED |
+| `platform.operator.created` / `.updated` | operator_id, site_id, experience_level, certification_status, status (+ `changed_fields` on updates) | M01, M06, M08 | LIVE |
+| `platform.machine.created` / `.updated` | machine_id, machine_type, model, site_id, status, engine_hours | M01, M04, M05 | LIVE |
+| `platform.site.created` / `.updated` | site_id, configuration | M04, M05 | LIVE |
+| `platform.zone.updated` | site_id, zone_id, zone_type, geometry | M04, M05, M01 | LIVE |
 
 ## M01 — Operational Twin & core domain
 
 | Event type | Payload (key fields) | Consumers | Status |
 |------------|----------------------|-----------|--------|
-| `task.created` / `task.updated` | task_id, site_id, task_type, zone_id, priority, target, planned_start, planned_end, status | M06, M05, M09 | PLANNED |
-| `operator.task.assigned` | assignment_id, task_id, operator_id, machine_id, assigned_by | M06, M08, M07 | PLANNED |
-| `assignment.updated` | assignment_id, changes, status | M06, M07 | PLANNED |
-| `session.machine.confirmed` | operator_id, machine_id | M08 (new machine → familiarization trigger) | PLANNED |
-| `session.precheck.completed` | session_id, machine_id, passed, failed_items[] | M04, M11 | PLANNED |
-| `task.started` / `.paused` / `.resumed` / `.completed` | session_id, task_id, operator_id, machine_id, at, pause_duration | M05, M06, M08, M11 | PLANNED |
-| `machine.telemetry.received` | machine_id, timestamp, engine_hours, fuel, fuel_rate, load_cycles, idle_seconds, speed, rpm, temperature, gps, operating_mode, seatbelt | M04 (optional), M05, M06 | PLANNED |
-| `machine.state.changed` | machine_id, from, to, at | M05, M06 | PLANNED |
-| `environment.conditions.updated` | site_id, zone_id?, weather, temperature, rain, visibility, soil_condition | M06, M07 | PLANNED |
-| `twin.updated` | operator_id, machine_id, task_id, changed_fields[], snapshot_ref | M05, M07, M09 | PLANNED |
+| `task.created` / `task.updated` | task_id, site_id, task_type, zone_id, priority, target, planned_start, planned_end, status | M06, M05, M09 | LIVE |
+| `operator.task.assigned` | assignment_id, task_id, operator_id, machine_id, assigned_by | M06, M08, M07 | LIVE |
+| `assignment.updated` | assignment_id, changes, status | M06, M07 | LIVE |
+| `session.machine.confirmed` | operator_id, machine_id | M08 (new machine → familiarization trigger) | LIVE |
+| `session.precheck.completed` | session_id, machine_id, passed, failed_items[] | M04, M11 | LIVE |
+| `task.started` / `.paused` / `.resumed` / `.completed` | session_id, task_id, operator_id, machine_id, at, pause_duration | M05, M06, M08, M11 | LIVE |
+| `machine.telemetry.received` | machine_id, timestamp, engine_hours, fuel, fuel_rate, load_cycles, idle_seconds, speed, rpm, temperature, gps, operating_mode, seatbelt | M04 (optional), M05, M06 | LIVE |
+| `machine.state.changed` | machine_id, from, to, at | M05, M06 | LIVE |
+| `environment.conditions.updated` | site_id, zone_id?, weather, temperature, rain, visibility, soil_condition | M06, M07 | LIVE |
+| `twin.updated` | operator_id, machine_id, task_id, changed_fields[], snapshot_ref | M05, M07, M09 | LIVE |
 
 ## M04 — IoT Hazard Mesh / Safety
 

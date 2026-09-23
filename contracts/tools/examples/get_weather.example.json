@@ -1,0 +1,12 @@
+{
+  "input": {
+    "site_id": "SITE_A"
+  },
+  "output": {
+    "weather": "RAIN",
+    "temperature_c": 31.0,
+    "rain_mm_h": 2.5,
+    "visibility": "GOOD",
+    "soil": "WET"
+  }
+}

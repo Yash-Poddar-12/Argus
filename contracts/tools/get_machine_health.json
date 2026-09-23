@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/tools/get_machine_health.json",
+  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "title": "get_machine_health",
+  "description": "Machine health from telemetry (temperature, fuel) with reasons.",
+  "x-tool": {
+    "name": "get_machine_health",
+    "version": "1.0",
+    "owner": "M01",
+    "permissions": [
+      "OPERATOR:self",
+      "SUPERVISOR_ADMIN:site"
+    ],
+    "safety_critical": false,
+    "latency_budget_ms": 500
+  },
+  "type": "object",
+  "required": [
+    "input",
+    "output"
+  ],
+  "properties": {
+    "input": {
+      "$ref": "#/$defs/MachineIdInput"
+    },
+    "output": {
+      "$ref": "#/$defs/MachineHealthOutput"
+    }
+  },
+  "$defs": {
+    "MachineHealthOutput": {
+      "properties": {
+        "machine_id": {
+          "title": "Machine Id",
+          "type": "string"
+        },
+        "health": {
+          "enum": [
+            "OK",
+            "WARNING",
+            "CRITICAL",
+            "UNKNOWN"
+          ],
+          "title": "Health",
+          "type": "string"
+        },
+        "temperature_c": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temperature C"
+        },
+        "fuel_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fuel Pct"
+        },
+        "engine_hours": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Engine Hours"
+        },
+        "telemetry_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Telemetry At"
+        },
+        "reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reasons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "machine_id",
+        "health",
+        "reasons"
+      ],
+      "title": "MachineHealthOutput",
+      "type": "object"
+    },
+    "MachineIdInput": {
+      "properties": {
+        "machine_id": {
+          "title": "Machine Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "machine_id"
+      ],
+      "title": "MachineIdInput",
+      "type": "object"
+    }
+  }
+}

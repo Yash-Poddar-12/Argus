@@ -1,0 +1,10 @@
+{
+  "operator_id": "OP1001",
+  "machine_id": "EXC001",
+  "task_id": "TASK001",
+  "reason": "task.started",
+  "changed": [
+    "state.task",
+    "state.machine"
+  ]
+}

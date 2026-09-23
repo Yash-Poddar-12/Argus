@@ -20,7 +20,7 @@ Every intelligence module (safety, ML, copilot, training, site intel, scenarios)
 
 - **Core domain:** Task, Assignment, TaskSession (start/pause/resume/complete), machine confirmation, pre-op checklist templates + results, task summary
 - **Telemetry ingestion:** `POST /telemetry` (batch), persisted to Timescale `machine_telemetry`, emitted as `machine.telemetry.received`
-- **Simulator core:** seeded clock, entities from seed data, telemetry generator per machine type, event emitter, CLI `make sim SCENARIO=S1 SEED=42 SPEED=10x`, scenario plugin interface (other modules add scenarios in `simulator/scenarios/<module>/`)
+- **Simulator core:** seeded clock, entities from seed data, telemetry generator per machine type, event emitter, CLI `python scripts/dev.py sim --scenario S1 --seed 42 [--speed N] [--demo-g1]`, scenario plugin interface (other modules add scenarios in `simulator/scenarios/<module>/`)
 - **Environment adapter:** weather/soil/visibility per site/zone, mock-first (scripted by the simulator) with a pluggable real provider
 - **Twin:** state layer (current operator/machine/task/environment state in Redis) + intelligence-layer **slots** filled by events from other modules (risk from M04/M06, ETA from M06, anomaly from M06, familiarity etc.); snapshots in `twin_snapshots`
 - **Twin API + WS:** operator twin, site twin, conditions; push `TASK_UPDATE`, `TASK_ETA_UPDATED`, `MACHINE_STATE_UPDATE`, `TWIN_UPDATE`
@@ -83,18 +83,34 @@ Consumes: `platform.*` (M00), `safety.event.raised` / `hazard.*` (M04) → twin 
 
 ## Acceptance criteria (G1)
 
-- [ ] `POST /assignments` for OP1001 → EXC001 → TASK001 emits `operator.task.assigned` and pushes `TASK_UPDATE` to `/ws/operators/OP1001` in < 1 s
-- [ ] `GET /operators/OP1001/tasks/today` returns TASK001
-- [ ] Machine confirm → pre-check → start → pause → resume → complete: all transitions validated (illegal transitions rejected) and emitted
-- [ ] `make sim SCENARIO=S1 SEED=42` produces identical telemetry on every run; the twin updates within 2 s of ingestion
-- [ ] `GET /operators/OP1001/twin` returns a schema-valid twin; intelligence fields null when M04/M06 are absent, filled when mock events are published
-- [ ] Twin can be rebuilt from DB + events after a Redis flush
-- [ ] All six tools return schema-valid results
+- [x] `POST /assignments` for OP1001 → EXC001 → TASK001 emits `operator.task.assigned` and pushes `TASK_UPDATE` to `/ws/operators/OP1001` in < 1 s
+- [x] `GET /operators/OP1001/tasks/today` returns TASK001
+- [x] Machine confirm → pre-check → start → pause → resume → complete: all transitions validated (illegal transitions rejected) and emitted
+- [x] `python scripts/dev.py sim --scenario S1 --seed 42` produces identical telemetry on every run; the twin updates within 2 s of ingestion
+- [x] `GET /operators/OP1001/twin` returns a schema-valid twin; intelligence fields null when M04/M06 are absent, filled when mock events are published
+- [x] Twin can be rebuilt from DB + events after a Redis flush
+- [x] All six tools return schema-valid results
 - [ ] Contracts tagged **v1** and frozen
 
 ## Testing
 
 State-machine unit tests; fusion unit tests (out-of-order and late telemetry); simulator determinism test; contract tests for APIs, events, and tools; the G1 end-to-end test.
+
+## As built (2026-09-23)
+
+| Topic | Decision |
+|-------|----------|
+| Layout | `tasks/` (domain.py pure state machine + service + api), `twin/` (fusion.py pure, service, telemetry, handlers), `environment/`, `api/` (twin + telemetry endpoints, Copilot tools) |
+| Contracts | OpenAPI, twin schema, all 14 event schemas and 6 tool schemas are **generated from `public.py` models** (`scripts/contracts.py export`, drift-checked in CI). Examples in `contracts/**/examples/` |
+| Start guards | Active assignment to the caller, machine confirmed ≤ 12 h ago (the assigned one), latest pre-check ≤ 12 h and passed (all items answered, no CRITICAL item failed), no other active session for the operator or machine |
+| Cycles / progress | Baseline = machine `load_cycles` at start, or the first reading at/after start if the task started before any telemetry |
+| Twin refresh | *Full* (DB) on lifecycle/assignment/master-data changes; *light* (cached context) on telemetry, environment, intelligence. `twin.updated` events are throttled to one per 10 s per operator for telemetry-only changes; WS `TWIN_UPDATE` is not throttled |
+| Intelligence slots | Filled from `safety.event.raised`, `prediction.task_time.updated` (→ also WS `TASK_ETA_UPDATED`), `prediction.risk.updated`, `operator.anomaly.detected`; persisted in `twin_intelligence` so the twin rebuilds exactly after a Redis flush |
+| Telemetry | Idempotent on `(machine_id, ts)`; out-of-order points are stored but don't regress live state; mode changes → `machine_state_changes` + `machine.state.changed` |
+| Environment | Manual/simulator provider via `POST /sites/{id}/conditions`; `WeatherProvider` protocol for a real source later |
+| Simulator | `simulator/core` (seeded engine, scenario discovery, HTTP/in-process/JSONL sinks, CLI with `--demo-g1`); scenarios S1 and S6 in `simulator/scenarios/core/` |
+
+**Known gaps:** WS payload schemas (`contracts/events/m01/ws/`) not written yet; telemetry ingestion uses a supervisor token (a dedicated service account/role is future work); Timescale hypertable creation is untested on real Postgres (no Docker on the build machine); the G1 *UI* screens (assignment form, operator task view) belong to M03/M02. The slice is demonstrable through the API and `python scripts/dev.py sim --demo-g1`.
 
 ## Future extensions
 

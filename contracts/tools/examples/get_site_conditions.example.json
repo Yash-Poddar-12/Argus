@@ -1,0 +1,30 @@
+{
+  "input": {
+    "site_id": "SITE_A",
+    "zone_id": "ZONE_B"
+  },
+  "output": {
+    "site_id": "SITE_A",
+    "site": {
+      "weather": "RAIN",
+      "temperature_c": 31.0,
+      "rain_mm_h": 2.5,
+      "visibility": "GOOD",
+      "soil": "WET",
+      "zone_id": null,
+      "as_of": "2026-09-23T03:00:00Z"
+    },
+    "zones": {
+      "ZONE_B": {
+        "weather": "RAIN",
+        "temperature_c": 31.0,
+        "rain_mm_h": 6.5,
+        "visibility": "GOOD",
+        "soil": "MUD",
+        "zone_id": "ZONE_B",
+        "as_of": "2026-09-23T03:10:00Z"
+      }
+    },
+    "environmental_difficulty": "HIGH"
+  }
+}

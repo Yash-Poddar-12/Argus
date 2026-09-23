@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://argus.local/contracts/tools/get_site_conditions.json",
+  "$comment": "GENERATED from m01_twin models by scripts/contracts.py export. Do not hand-edit.",
+  "title": "get_site_conditions",
+  "description": "Site and zone conditions plus derived environmental difficulty.",
+  "x-tool": {
+    "name": "get_site_conditions",
+    "version": "1.0",
+    "owner": "M01",
+    "permissions": [
+      "OPERATOR:self",
+      "SUPERVISOR_ADMIN:site"
+    ],
+    "safety_critical": false,
+    "latency_budget_ms": 500
+  },
+  "type": "object",
+  "required": [
+    "input",
+    "output"
+  ],
+  "properties": {
+    "input": {
+      "$ref": "#/$defs/SiteZoneInput"
+    },
+    "output": {
+      "$ref": "#/$defs/SiteConditions"
+    }
+  },
+  "$defs": {
+    "SiteConditions": {
+      "properties": {
+        "site_id": {
+          "title": "Site Id",
+          "type": "string"
+        },
+        "site": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TwinEnvironment"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "zones": {
+          "additionalProperties": {
+            "$ref": "#/$defs/TwinEnvironment"
+          },
+          "default": {},
+          "title": "Zones",
+          "type": "object"
+        },
+        "environmental_difficulty": {
+          "anyOf": [
+            {
+              "enum": [
+                "LOW",
+                "MEDIUM",
+                "HIGH"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Environmental Difficulty"
+        }
+      },
+      "required": [
+        "site_id"
+      ],
+      "title": "SiteConditions",
+      "type": "object"
+    },
+    "SiteZoneInput": {
+      "properties": {
+        "site_id": {
+          "title": "Site Id",
+          "type": "string"
+        },
+        "zone_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zone Id"
+        }
+      },
+      "required": [
+        "site_id"
+      ],
+      "title": "SiteZoneInput",
+      "type": "object"
+    },
+    "TwinEnvironment": {
+      "properties": {
+        "weather": {
+          "default": "CLEAR",
+          "enum": [
+            "CLEAR",
+            "CLOUDY",
+            "RAIN",
+            "STORM",
+            "FOG"
+          ],
+          "title": "Weather",
+          "type": "string"
+        },
+        "temperature_c": {
+          "default": 30.0,
+          "title": "Temperature C",
+          "type": "number"
+        },
+        "rain_mm_h": {
+          "default": 0.0,
+          "minimum": 0,
+          "title": "Rain Mm H",
+          "type": "number"
+        },
+        "visibility": {
+          "default": "GOOD",
+          "enum": [
+            "GOOD",
+            "MODERATE",
+            "POOR"
+          ],
+          "title": "Visibility",
+          "type": "string"
+        },
+        "soil": {
+          "default": "DRY",
+          "enum": [
+            "DRY",
+            "WET",
+            "MUD",
+            "ROCKY"
+          ],
+          "title": "Soil",
+          "type": "string"
+        },
+        "zone_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Zone Id"
+        },
+        "as_of": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "As Of"
+        }
+      },
+      "title": "TwinEnvironment",
+      "type": "object"
+    }
+  }
+}

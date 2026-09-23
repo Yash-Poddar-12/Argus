@@ -13,4 +13,6 @@
 ## Log
 
 <!-- log:insert -->
+- 2026-09-23 · PUSH · M00 · feature/m01-operational-twin · core fixes found while building M01: nested-router path collection (FastAPI 0.14x), RedisStateStore.keys bug, seed_all discovery, generated contract documents in scripts/contracts.py
+- 2026-09-23 · PUSH · M01 · feature/m01-operational-twin · M01 implemented: tasks/assignments/sessions/pre-checks + lifecycle, telemetry ingestion, context fusion + Redis twin (full/light refresh, intelligence slots, snapshots), twin/site/machine APIs + WS, environment adapter, 6 Copilot tools, generated contracts, deterministic simulator (S1, S6, --demo-g1)
 - 2026-09-23 · PUSH · M00 · feature/m00-foundation · M00 implemented: core (config, db, event bus memory+Redis Streams, state, WS gateway, auth/RBAC, registry, errors, logging, health/metrics), m00_platform CRUD+events+seed, Alembic branches, contracts baseline + tooling, frontend workspace + both app shells with slots, dev.py, compose, CI
